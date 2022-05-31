@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema();
+const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
   name: {
@@ -8,7 +8,7 @@ const UserSchema = new Schema({
   },
 
   email: {
-    types: String,
+    type: String,
     required: true,
   },
   phone: {
