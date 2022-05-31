@@ -92,4 +92,33 @@ exports.login = (req, res) => {
   if (!email || !password) {
     return res.status(400).json({ message: "All inputs must be filled" });
   }
+
+  User.findOne({ email: email }).then((user) => {
+    if (!user) {
+      return res.status(400).json({ message: "Could not find the user" });
+    }
+
+    bcrypt.compare(password, user.password).then((isMatch) => {
+      if (!isMatch)
+        return res.status(400).json({ message: "Incorrect Email or Password" });
+
+      jwt.sign(
+        {
+          id: user.id,
+        },
+        secret,
+        { expiresIn: 3600 },
+        (err, token) => {
+          if (err) throw err;
+          res.json({
+            token,
+            user: {
+              id: user.id,
+              email: user.email,
+            },
+          });
+        }
+      );
+    });
+  });
 };

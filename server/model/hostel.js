@@ -3,11 +3,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema();
 
 const HostelSchema = new Schema({
-  accommodationName: {
+  hostel_name: {
     type: String,
     required: true,
   },
-  accomodationPrice: {
+  hostel_price: {
     type: Number,
     required: true,
   },
@@ -21,7 +21,7 @@ const HostelSchema = new Schema({
     type: String,
   },
 
-  contactName: {
+  contact_name: {
     type: String,
   },
 
@@ -29,15 +29,15 @@ const HostelSchema = new Schema({
     type: Number,
   },
 
-  roomType: {
+  room_type: {
     type: String,
   },
 
-  bedOptions: {
+  bed_options: {
     type: String,
   },
 
-  noOfBeds: {
+  no_of_beds: {
     type: Number,
   },
 

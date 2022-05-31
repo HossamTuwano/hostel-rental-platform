@@ -68,5 +68,5 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 db();
 
 app.listen(port, () => {
-  console.log("connected");
+  console.log(`connected to localhost:${port}`);
 });
