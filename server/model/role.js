@@ -11,3 +11,5 @@ const RoleSchema = {
     default: Date.now(),
   },
 };
+
+module.exports = mongoose.model("Role", RoleSchema);

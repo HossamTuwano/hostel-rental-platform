@@ -5,6 +5,8 @@ const cors = require("cors");
 const multer = require("multer");
 const mongoose = require("mongoose");
 const authRouter = require("./routes/auth");
+const roleRouter = require("./routes/role");
+const db = require("./config/config");
 
 dotenv.config({ path: "./.env" });
 const port = process.env.PORT;
@@ -16,6 +18,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(authRouter);
+app.use(roleRouter);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -44,20 +47,26 @@ app.use(express.json());
 app.use(multer({ storage: storage, fileFilter: fileFilter }).single("image"));
 app.use("/images", express.static(path.join(__dirname, "images")));
 
-mongoose
-  .connect(dbURI)
-  .then((res) => {
-    app.listen(port, () => {
-      console.log(`connected to server 127.0.0.0:${port}`);
-    });
-  })
-  .catch(
-    (err) => {
-      console.log(err);
-    },
-    { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }
-  );
+// mongoose
+//   .connect(dbURI)
+//   .then((res) => {
+//     app.listen(port, () => {
+//       console.log(`connected to server 127.0.0.0:${port}`);
+//     });
+//   })
+//   .catch(
+//     (err) => {
+//       console.log(err);
+//     },
+//     { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }
+//   );
 
-mongoose.connection.on("open", () => {
-  console.log("connected to database");
+// mongoose.connection.on("open", () => {
+//   console.log("connected to database");
+// });
+
+db();
+
+app.listen(port, () => {
+  console.log("connected");
 });

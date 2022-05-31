@@ -16,10 +16,16 @@ const UserSchema = new Schema({
     required: true,
   },
 
+  role_id: {
+    type: Schema.Types.ObjectId,
+    ref: "Role",
+    autopopulate: true,
+  },
   password: {
     type: String,
     require: true,
   },
 });
 
+UserSchema.plugin(require("mongoose-autopopulate"));
 module.exports = mongoose.model("User", UserSchema);
