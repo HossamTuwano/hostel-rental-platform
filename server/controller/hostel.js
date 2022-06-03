@@ -43,6 +43,6 @@ exports.getHostel = (req, res) => {
     }
     res
       .status(200)
-      .json({ success: true, message: "hostels found", hostel: hostel });
+      .json({hostel: hostel });
   });
 };

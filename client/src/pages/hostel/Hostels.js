@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { add_hostel } from "../../API";
+import React from "react";
+import { get_hostels } from "../../API";
+import useFetch from "../../hooks/useFetch";
+import Hostel from "./Hostel";
 
 const Hostels = () => {
-  const [hostel, setHoste] = useState();
+  const { data, loading, error } = useFetch(`${get_hostels}`);
 
-  //   console.log(add_hostel);
-  useEffect(() => {
-    const getHostel = async () => {
-      const response = await fetch(`${add_hostel}`);
-      const data = await response.json();
-      console.log(data);
-    };
-
-    getHostel();
-  });
-  return <div></div>;
+  if (loading) return <h1>Loading...</h1>;
+  if (error) <pre>{JSON.stringify(error, null, 2)}</pre>;
+  console.log(data);
+  return (
+    <div>
+      {data?.hostel?.map((hos) => (
+        <Hostel key={hos._id} name={hos.hostel_name}/>
+      ))}
+    </div>
+  );
 };
 
 export default Hostels;
