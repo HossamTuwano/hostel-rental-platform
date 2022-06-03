@@ -27,5 +27,9 @@ exports.addHostel = (req, res) => {
     image: image,
   });
 
-  hostel.save();
+  hostel
+    .save()
+    .then((savedDoc) =>
+      res.status(201).json({ success: true, savedDoc: hostel })
+    );
 };

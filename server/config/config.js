@@ -5,7 +5,6 @@ require("dotenv/config");
 const port = process.env.path;
 const dbURI = process.env.DBURI;
 
-
 module.exports = () => {
   const needed = {
     useUnifiedTopology: true,
@@ -14,7 +13,7 @@ module.exports = () => {
 
   mongoose.Promise = global.Promise;
 
-  mongoose.connect(dbURI, needed);
+  mongoose.connect(process.env.DBURI, needed);
 
   mongoose.connection.on("connected", () => {
     console.log("connect to database");
@@ -24,5 +23,3 @@ module.exports = () => {
     console.log(error);
   });
 };
-
-
