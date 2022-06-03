@@ -33,3 +33,16 @@ exports.addHostel = (req, res) => {
       res.status(201).json({ success: true, savedDoc: hostel })
     );
 };
+
+exports.getHostel = (req, res) => {
+  Hostel.find((error, hostel) => {
+    if (error) {
+      res
+        .status(400)
+        .json({ succes: false, message: "could not find hostels" });
+    }
+    res
+      .status(200)
+      .json({ success: true, message: "hostels found", hostel: hostel });
+  });
+};

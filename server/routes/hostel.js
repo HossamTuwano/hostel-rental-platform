@@ -1,9 +1,9 @@
 const express = require("express");
-const hostelController = require("../controller/hostel")
+const hostelController = require("../controller/hostel");
 
-const router = express.Router()
+const router = express.Router();
 
-router.post("/add-hostel", hostelController.addHostel)
+router.post("/add-hostel", hostelController.addHostel);
+router.get("/hostels", hostelController.getHostel);
 
-
-module.exports = router
+module.exports = router;
