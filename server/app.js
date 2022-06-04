@@ -3,16 +3,13 @@ const dotenv = require("dotenv");
 const path = require("path");
 const cors = require("cors");
 const multer = require("multer");
-const mongoose = require("mongoose");
 const authRouter = require("./routes/auth");
 const roleRouter = require("./routes/role");
-const hostelRouter =require("./routes/hostel")
+const hostelRouter = require("./routes/hostel");
 const db = require("./config/config");
 
 dotenv.config({ path: "./.env" });
 const port = process.env.PORT;
-
-const dbURI = process.env.DBURI;
 
 const app = express();
 
@@ -21,7 +18,6 @@ app.use(cors());
 app.use(authRouter);
 app.use(roleRouter);
 app.use(hostelRouter);
-
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
