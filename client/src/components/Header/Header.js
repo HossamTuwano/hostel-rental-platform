@@ -19,7 +19,7 @@ function Header() {
             <div className="flex">
               {" "}
               <Link to="/" className="mx-2">
-                Logout
+                {/* Logout */}
               </Link>
               <Link to="/add-hostel" className="mx-2 ">
                 Add Hostel
