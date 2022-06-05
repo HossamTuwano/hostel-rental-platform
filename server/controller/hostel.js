@@ -7,43 +7,42 @@ exports.addHostel = (req, res) => {
   //   throw error;
   // }
   const hostel_name = req.body.hostel_name;
-  const hostel_price = req.body.hostel_price;
+  const contact_name = req.body.contact_name;
+  const price = req.body.price;
+  const phone = req.body.phone;
   const region = req.body.region;
   const city = req.body.city;
-  const contact_name = req.body.contact_name;
-  const phone = req.body.phone;
+  const image = req.file.path || req.file;
   const room_type = req.body.room_type;
   const bed_options = req.body.bed_options;
   const no_of_beds = req.body.no_of_beds;
-  const image = req.file;
 
   const hostel = new Hostel({
     hostel_name: hostel_name,
-    hostel_price: hostel_price,
+    contact_name: contact_name,
+    price: price,
+    phone: phone,
     region: region,
     city: city,
-    contact_name: contact_name,
-    phone: phone,
+    image: image,
     room_type: room_type,
     bed_options: bed_options,
     no_of_beds: no_of_beds,
-    image: image,
   });
-
   hostel
     .save()
-    .then((savedDoc) =>
-      res.status(201).json({ success: true, savedDoc: hostel })
-    );
+    .then(() => res.status(201).json({ msg: "hostel added", hostel }))
+    .catch((err) => console.log(err));
 };
 
 exports.getHostel = (req, res) => {
+  // res.send("yo");
   Hostel.find((error, hostel) => {
     if (error) {
       res
-        .status(400)
-        .json({ succes: false, message: "could not find hostels" });
+        .status(200)
+        .json({ success: false, message: "could not find hostels" });
     }
-    res.status(200).json({ hostel: hostel });
+    res.status(200).json({ msg: "hostel found", hostel });
   });
 };

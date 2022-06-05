@@ -11,7 +11,7 @@ const Hostel = ({
   bedOption,
   noOfBeds,
 }) => {
-  return <div>{name}</div>;
+  return <div>{name} hah</div>;
 };
 
 export default Hostel;

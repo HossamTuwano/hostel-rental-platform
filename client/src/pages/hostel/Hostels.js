@@ -8,11 +8,10 @@ const Hostels = () => {
 
   if (loading) return <h1>Loading...</h1>;
   if (error) <pre>{JSON.stringify(error, null, 2)}</pre>;
-  console.log(data);
   return (
     <div>
       {data?.hostel?.map((hos) => (
-        <Hostel key={hos._id} name={hos.hostel_name}/>
+        <Hostel key={hos._id} name={hos.hostel_name} />
       ))}
     </div>
   );

@@ -13,12 +13,6 @@ const port = process.env.PORT;
 
 const app = express();
 
-app.use(express.json());
-app.use(cors());
-app.use(authRouter);
-app.use(roleRouter);
-app.use(hostelRouter);
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "images");
@@ -45,6 +39,10 @@ app.use(cors());
 app.use(express.json());
 app.use(multer({ storage: storage, fileFilter: fileFilter }).single("image"));
 app.use("/images", express.static(path.join(__dirname, "images")));
+
+app.use(authRouter);
+app.use(roleRouter);
+app.use(hostelRouter);
 
 db();
 

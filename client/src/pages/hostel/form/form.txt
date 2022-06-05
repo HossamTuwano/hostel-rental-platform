@@ -1,62 +1,4 @@
-import React, { useState } from "react";
-
-function AddHostel() {
-  const [hostel, setHostel] = useState({
-    hostel_name: "",
-    contact_name: "",
-    price: "",
-    phone: "",
-    region: "",
-    city: "",
-    image: "",
-    room_type: "",
-    bed_options: "",
-    no_of_beds: "",
-  });
-
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    const formData = new FormData();
-
-    formData.append("hostel_name", hostel.hostel_name);
-    formData.append("contact_name", hostel.contact_name);
-    formData.append("price", hostel.price);
-    formData.append("phone", hostel.phone);
-    formData.append("region", hostel.region);
-    formData.append("city", hostel.city);
-    formData.append("image", hostel.image);
-    formData.append("room_type", hostel.room_type);
-    formData.append("bed_options", hostel.bed_options);
-    formData.append("no_of_beds", hostel.no_of_beds);
-
-    const fetchHostel = async () => {
-      try {
-        const res = await fetch("http://localhost:8000/add-hostel", {
-          method: "POST",
-          body: formData,
-        });
-        const data = await res.json();
-        setHostel(data);
-        console.log(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchHostel();
-    console.log(hostel);
-  }
-
-  const handleChange = (e) => {
-    setHostel({ ...hostel, [e.target.name]: e.target.value });
-  };
-
-  const handleImage = (e) => {
-    setHostel({ ...hostel, image: e.target.files[0] });
-  };
-  return (
-    <div>
-      <div>
+<div>
         <div className="addAccommodation w-full h-full flex flex-row p-0 m-0">
           <div className="flex w-2/12">
             <div className="sideNavItems flex flex-col ">
@@ -96,7 +38,7 @@ function AddHostel() {
                             className="border focus:outline-none w-10/12 h-11 mb-2 px-2"
                             type="text"
                             placeholder="Name"
-                            name="hostel_name"
+                            name="name"
                             onChange={handleChange}
                           />
                           <span>
@@ -118,17 +60,17 @@ function AddHostel() {
                                 type="text"
                                 className="border focus:outline-none px-2"
                                 placeholder="Contact Name"
-                                name="contact_name"
+                                name="contactName"
                                 onChange={handleChange}
                               />
                             </div>
                             <div className="mb-4">
-                              <label htmlFor="price"></label>
+                              <label htmlFor="hostelPrice"></label>
                               <input
                                 type="text"
                                 className="border focus:outline-none px-2"
                                 placeholder="Hostel Price"
-                                name="price"
+                                name="hostelPrice"
                                 onChange={handleChange}
                               />
                             </div>
@@ -187,7 +129,7 @@ function AddHostel() {
                           <div className="flex justify-between">
                             <div>
                               <label htmlFor="">Room Type</label>
-                              <select name="room_type" onChange={handleChange}>
+                              <select name="roomType" onChange={handleChange}>
                                 <option>--select--</option>
 
                                 <option>single</option>
@@ -199,7 +141,7 @@ function AddHostel() {
                             <div>
                               <label htmlFor="bed-options">Bed Options</label>
                               <select
-                                name="bed_options"
+                                name="bedOptions"
                                 className="border focus:outline-none px-2 w-44 "
                                 onChange={handleChange}
                               >
@@ -216,7 +158,7 @@ function AddHostel() {
                                 Number of Beds
                               </label>
                               <select
-                                name="no_of_beds"
+                                name="noOfBeds"
                                 id="beds"
                                 className="border focus:outline-none px-2 w-44 "
                                 onChange={handleChange}
@@ -246,8 +188,3 @@ function AddHostel() {
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-export default AddHostel;
