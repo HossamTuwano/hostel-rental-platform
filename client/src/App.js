@@ -1,8 +1,9 @@
 import "./App.css";
 import AddHostel from "./pages/hostel/AddHostel";
-import Hostels from "./pages/hostel/Hostels";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
+import Signup from "./pages/Auth/Signup";
+import Login from "./pages/Auth/Login";
 
 function App() {
   return (
@@ -10,6 +11,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/add-hostel" element={<AddHostel />} />
+        <Route path="/Signup" element={<Signup />} />
+        <Route path="/Login" element={<Login />} />
       </Routes>
     </div>
   );

@@ -26,8 +26,8 @@ function Header() {
               </Link>
             </div>
 
-            <Link to="/register" className="mx-2">
-              Register
+            <Link to="/Signup" className="mx-2">
+              Signup
             </Link>
           </div>
         </ul>
