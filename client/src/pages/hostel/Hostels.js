@@ -8,6 +8,7 @@ const Hostels = () => {
 
   if (loading) return <h1>Loading...</h1>;
   if (error) <pre>{JSON.stringify(error, null, 2)}</pre>;
+  console.log(data);
   return (
     <div>
       {data?.hostel?.map((hos) => (

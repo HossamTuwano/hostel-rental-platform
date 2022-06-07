@@ -4,10 +4,12 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Signup from "./pages/Auth/Signup";
 import Login from "./pages/Auth/Login";
+import Hostels from "./pages/hostel/Hostels";
 
 function App() {
   return (
     <div className="App">
+      {/* <Hostels /> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/add-hostel" element={<AddHostel />} />

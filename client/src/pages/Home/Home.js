@@ -1,9 +1,9 @@
 import React from "react";
-import Hostel from "../hostel/Hostel";
 import Banner from "../../components/Banner/Banner";
 import Header from "../../components/Header/Header";
 import HowTo from "../../components/HowTo/Howto";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import Hostels from "../hostel/Hostels";
 
 function Home() {
   return (
@@ -26,7 +26,7 @@ function Home() {
           <HowTo />
         </div>
         <div className="">
-          <Hostel />
+          <Hostels />
         </div>
       </div>
     </div>
