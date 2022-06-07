@@ -1,16 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { BsFillHouseDoorFill, BsHouseDoor } from "react-icons/bs";
+import { BsHouseDoor } from "react-icons/bs";
+import { signup } from "../../API/index";
 
 function Signup() {
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+    phone: "",
+    role_name: "",
+  });
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData();
+
+    formData.append("name", user.name);
+    formData.append("email", user.email);
+    formData.append("password", user.password);
+    formData.append("phone", user.phone);
+    formData.append("role_name", user.role_name);
+
+    const addUser = async () => {
+      const response = await fetch(`${signup}`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      setUser(data);
+      console.log(data);
+    };
+
+    addUser();
+    console.log(user);
+  }
+
   const handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+    setUser({ ...user, [e.target.name]: e.target.value });
   };
   return (
     <div className="form w-full h-screen flex justify-center items-center bg-[#f7f5f5] ">
       <div className="flex min-w-[800px] min-h-[450px] border rounded-md shadow">
         <div className="basis-[450px] bg-white flex justify-center ">
-          <form className="flex flex-col justify-center">
+          <form
+            className="flex flex-col justify-center"
+            onSubmit={handleSubmit}
+          >
             <div className="flex flex-col  ">
               <div className="title mb-5">
                 <h1 className="text-4xl px-10">
@@ -62,16 +99,18 @@ function Signup() {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="role" className="block"></label>
+                <label htmlFor="role_name" className="block"></label>
                 <select
                   className="shadow rounded w-full  leading-tight focuse:shadow-outline py-1 px-2 border outline-none text-[#9ca3af] text-md"
                   aria-label=".form-select-sm example"
+                  name="role_name"
+                  onChange={handleChange}
                 >
                   <option className="text-gray-700 bg-black">
-                    Are you a Student or a Landlord?
+                    Are you a Student or a Landlord? 
                   </option>
                   <option value="student">Student</option>
-                  <option value="owner">Hostel Owner</option>
+                  <option value="landlord">Landlord</option>
                 </select>
               </div>
               <div className="submit mb-2">

@@ -1,5 +1,6 @@
 const express = require("express");
 const hostelController = require("../controller/hostel");
+const isAuth = require("../middleware/is-auth")
 
 const router = express.Router();
 

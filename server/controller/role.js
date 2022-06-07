@@ -4,7 +4,7 @@ exports.role = (req, res) => {
   const { role_name, date } = req.body;
 
   const role = new Role({
-    role_name: "hostelOwner",
+    role_name: ["landlord", "student"],
   });
   try {
     role.save();
@@ -13,3 +13,4 @@ exports.role = (req, res) => {
     console.log(err);
   }
 };
+ 

@@ -31,7 +31,7 @@ const HostelSchema = new Schema({
 
   image: {
     type: String,
-    required: true,
+    // required: true,
   },
 
   room_type: {

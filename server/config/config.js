@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 
 require("dotenv/config");
 
-const port = process.env.path;
 const dbURI = process.env.DBURI;
 
 module.exports = () => {
@@ -13,7 +12,10 @@ module.exports = () => {
 
   mongoose.Promise = global.Promise;
 
-  mongoose.connect(process.env.DBURI, needed);
+  mongoose.connect(
+    process.env.URI_ATLAS,
+    needed
+  );
 
   mongoose.connection.on("connected", () => {
     console.log("connect to database");

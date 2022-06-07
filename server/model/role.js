@@ -1,13 +1,14 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
 const Schema = mongoose.Schema;
 
 const RoleSchema = {
   role_name: {
-    type: String,
+    type: Object,
+    required: true,
   },
 
   date: {
-    type: Date,
+    type: Date, 
     default: Date.now(),
   },
 };
