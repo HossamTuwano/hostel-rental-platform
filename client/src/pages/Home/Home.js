@@ -1,4 +1,5 @@
 import React from "react";
+import Hostel from "../hostel/Hostel";
 import Banner from "../../components/Banner/Banner";
 import Header from "../../components/Header/Header";
 import HowTo from "../../components/HowTo/Howto";
@@ -24,7 +25,9 @@ function Home() {
         <div className="mb-[50px]">
           <HowTo />
         </div>
-        <div className="">{/* <ViewAccommodation /> */}</div>
+        <div className="">
+          <Hostel />
+        </div>
       </div>
     </div>
   );
