@@ -10,16 +10,16 @@ exports.addHostel = (req, res) => {
   const contact_name = req.body.contact_name;
   const price = req.body.price;
   const phone = req.body.phone;
-  const region = req.body.region;  
+  const region = req.body.region;
   const city = req.body.city;
-  const image = req.file  ;
+  const image = req.file.path;
   const room_type = req.body.room_type;
   const bed_options = req.body.bed_options;
   const no_of_beds = req.body.no_of_beds;
 
   const hostel = new Hostel({
     hostel_name: hostel_name,
-    contact_name: contact_name,  
+    contact_name: contact_name,
     price: price,
     phone: phone,
     region: region,
@@ -44,6 +44,5 @@ exports.getHostel = (req, res) => {
         .json({ success: false, message: "could not find hostels" });
     }
     res.status(200).json({ msg: "hostel found", hostel });
-  }); 
+  });
 };
-  

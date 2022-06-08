@@ -10,12 +10,12 @@ const Hostels = () => {
   if (error) <pre>{JSON.stringify(error, null, 2)}</pre>;
   console.log(data);
   return (
-    <div>
+    <div className="grid grid-cols-4 gap-5 p-4  container mx-auto ">
       {data?.hostel?.map((hos) => (
-        <Hostel key={hos._id} name={hos.hostel_name} />
+        <Hostel className="" key={hos._id} name={hos.hostel_name} imgUrl={hos.image} />
       ))}
     </div>
-  );
+  ); 
 };
 
 export default Hostels;
