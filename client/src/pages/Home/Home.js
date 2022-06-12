@@ -1,6 +1,5 @@
 import React from "react";
 import Banner from "../../components/Banner/Banner";
-import Header from "../../components/Header/Header";
 import HowTo from "../../components/HowTo/Howto";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import Hostels from "../hostel/Hostels";
@@ -8,7 +7,7 @@ import Hostels from "../hostel/Hostels";
 function Home() {
   return (
     <div>
-      <Header />
+  
       <div>
         <Banner />
         <SearchBar />

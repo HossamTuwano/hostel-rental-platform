@@ -21,7 +21,7 @@ const UserSchema = new Schema({
     ref: "Role",
     autopopulate: true,
   },
-  password: {
+  password: { 
     type: String,
     require: true,
   },

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BsHouseDoor } from "react-icons/bs";
 import { signup } from "../../API/index";
 
@@ -11,6 +11,7 @@ function Signup() {
     phone: "",
     role_name: "",
   });
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -31,6 +32,11 @@ function Signup() {
       const data = await response.json();
       setUser(data);
       console.log(data);
+      if (data.success) {
+        navigate("/");
+      } else {
+        alert("fail");
+      }
     };
 
     addUser();
@@ -107,18 +113,19 @@ function Signup() {
                   onChange={handleChange}
                 >
                   <option className="text-gray-700 bg-black">
-                    Are you a Student or a Landlord? 
+                    Are you a Student or a Landlord?
                   </option>
                   <option value="student">Student</option>
                   <option value="landlord">Landlord</option>
                 </select>
               </div>
               <div className="submit mb-2">
-                <input
+                <button
                   type="submit"
-                  value="Register"
                   className="bg-cyan-800 text-white font-bold py-1 px-4 rounded w-full cursor-pointer"
-                />
+                >
+                  Register
+                </button>
               </div>
 
               <div className="sign-in px-4 text-center">

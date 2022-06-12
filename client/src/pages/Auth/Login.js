@@ -1,14 +1,51 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+import { login } from "../../API/index";
 
 function Login() {
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const navigate = useNavigate();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    formData.append("email", user.email);
+    formData.append("password", user.password);
+
+    const loginUser = async () => {
+      const response = await fetch(`${login}`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      setUser(data);
+      console.log(data);
+      console.log(data.success);
+
+      if (data.success) {
+        navigate("/");
+      } else {
+        alert("wrong email or password");
+      }
+    };
+
+    loginUser();
+  }
+
   const handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+    setUser({ ...user, [e.target.name]: e.target.value });
   };
   return (
     <div className="border w-full h-screen flex justify-center flex-col items-center bg-[#f7f5f5]">
       <div className="form flex justify-center mt-16 border-black w-[600px] shadow-lg p-[60px] rounded-lg bg-white mb-[10em] ">
-        <form className="flex flex-col">
+        <form className="flex flex-col" onSubmit={handleSubmit}>
           <div className="title mb-5">
             <h1 className="text-4xl px-10">
               <span className="text-cyan-900  font-bold">Welcome.</span>{" "}
@@ -37,11 +74,12 @@ function Login() {
             />
           </div>
           <div className="submit mb-2">
-            <input
+            <button
               type="submit"
-              value="Login"
               className="bg-cyan-800 text-white font-bold py-1 px-4 rounded w-full cursor-pointer"
-            />
+            >
+              Login
+            </button>
           </div>
           <div className="sign-in px-4 text-center mb-5">
             <span className="text-gray-700 text-sm font-light">

@@ -41,45 +41,43 @@ exports.signup = (req, res, next) => {
         } else {
           const id = result._id;
           console.log(id);
-          bcrypt
-            .hash(myPlainTextPassword, saltRounds)
-            .then((hash) => {
-              const user = new User({
-                name: name,
-                password: hash,
-                email: email,
-                phone: phone,
-                role_id: id,
-              });
-
-              user.save().then((user) => {
-                jwt.sign(
-                  { jwt_id: user.id },
-                  secret,
-                  { expiresIn: 3600 },
-                  (error, token) => {
-                    if (error) throw error;
-                    res.json({
-                      token,
-                      user: {
-                        id: user.id,
-                        email: user.email,
-                      },
-                    });
-                  }
-                );
-              });
-            })
-            .then((result) =>
-              res.status(201).json({ message: "User created!" })
-            )
-            .catch((err) => {
-              if (!err.stataCode) {
-                err.stataCode = 500;
-              }
-
-              next(err);
+          bcrypt.hash(myPlainTextPassword, saltRounds).then((hash) => {
+            const user = new User({
+              name: name,
+              password: hash,
+              email: email,
+              phone: phone,
+              role_id: id,
             });
+
+            user.save().then((user) => {
+              jwt.sign(
+                { jwt_id: user.id },
+                secret,
+                { expiresIn: 3600 },
+                (error, token) => {
+                  if (error) throw error;
+                  res.json({
+                    success: true,
+                    token,
+                    user: {
+                      user: user,
+                    },
+                  });
+                }
+              );
+            });
+          });
+          // .then((result) =>
+          //   res.status(201).json({ message: "User created!", success: true })
+          // )
+          // .catch((err) => {
+          //   if (!err.stataCode) {
+          //     err.stataCode = 500;
+          //   }
+
+          //   next(err);
+          // });
         }
       });
     }
@@ -105,20 +103,33 @@ exports.login = (req, res) => {
       jwt.sign(
         {
           id: user.id,
+          role: user.role_id,
         },
         secret,
         { expiresIn: 3600 },
         (err, token) => {
           if (err) throw err;
           res.json({
+            success: true,
             token,
             user: {
               id: user.id,
               email: user.email,
+              role: user.role_id,
             },
           });
         }
       );
     });
+  });
+};
+
+exports.get_user = (req, res) => {
+  User.find((error, hostel) => {
+    if (error) {
+      return res.status(200).json({ success: false, msg: "not found" });
+    } else {
+      return res.status(200).json({ success: true, hostel });
+    }
   });
 };

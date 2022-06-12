@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { get_hostels } from "../../API";
 import useFetch from "../../hooks/useFetch";
 import Hostel from "./Hostel";
@@ -8,14 +9,15 @@ const Hostels = () => {
 
   if (loading) return <h1>Loading...</h1>;
   if (error) <pre>{JSON.stringify(error, null, 2)}</pre>;
-  console.log(data);
   return (
     <div className="grid grid-cols-4 gap-5 p-4  container mx-auto ">
       {data?.hostel?.map((hos) => (
-        <Hostel className="" key={hos._id} name={hos.hostel_name} imgUrl={hos.image} />
+        <Link to="View-hostel" key={hos._id}>
+          <Hostel className="" name={hos.hostel_name} imgUrl={hos.image} />
+        </Link>
       ))}
     </div>
-  ); 
+  );
 };
 
 export default Hostels;

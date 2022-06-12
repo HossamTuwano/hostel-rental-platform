@@ -52,7 +52,7 @@ function AddHostel() {
   };
 
   const handleImage = (e) => {
-    setHostel({ ...hostel, image: e.target.files[0] });
+    setHostel({ ...hostel, image: e.target.files });
   };
   return (
     <div>
@@ -173,6 +173,7 @@ function AddHostel() {
                         </div>
                         <div className="border-t w-full ">
                           <input
+                            multiple
                             type="file"
                             name="image"
                             className="mt-4"

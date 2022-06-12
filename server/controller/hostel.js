@@ -12,7 +12,7 @@ exports.addHostel = (req, res) => {
   const phone = req.body.phone;
   const region = req.body.region;
   const city = req.body.city;
-  const image = req.file.path;
+  const image = req.files.path;
   const room_type = req.body.room_type;
   const bed_options = req.body.bed_options;
   const no_of_beds = req.body.no_of_beds;

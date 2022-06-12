@@ -12,8 +12,6 @@ function Hostel({
   noOfBeds,
   imgUrl,
 }) {
-  console.log(name);
-
   return (
     <div className="border rounded-lg overflow-hidden">
       <div className="h-[200px]  ">

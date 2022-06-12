@@ -37,7 +37,7 @@ const fileFilter = (req, file, cb) => {
 
 app.use(cors());
 app.use(express.json());
-app.use(multer({ storage: storage, fileFilter: fileFilter }).single("image"));
+app.use(multer({ storage: storage, fileFilter: fileFilter }).array("image"));
 app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use(authRouter);
