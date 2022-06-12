@@ -4,6 +4,8 @@ import { BsHouseDoor } from "react-icons/bs";
 import { signup } from "../../API/index";
 
 function Signup() {
+  const [isAuth, setIsAuth] = useState(false);
+  const [authLoading, setAuthLoading] = useState(false);
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -24,18 +26,21 @@ function Signup() {
     formData.append("role_name", user.role_name);
 
     const addUser = async () => {
-      const response = await fetch(`${signup}`, {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-      setUser(data);
-      console.log(data);
-      if (data.success) {
-        navigate("/login");
-      } else {
-        alert("fail");
+      try {
+        const response = await fetch(`${signup}`, {
+          method: "POST",
+          body: formData,
+        });
+        const data = await response.json();
+        setUser(data);
+        console.log(data);
+        if (data.success) {
+          navigate("/login");
+        } else {
+          alert("fail");
+        }
+      } catch (error) {
+        console.log(error);
       }
     };
 
