@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { get_hostels } from "../../API";
 import useFetch from "../../hooks/useFetch";
@@ -10,11 +10,16 @@ const Hostels = () => {
   if (loading) return <h1>Loading...</h1>;
   if (error) <pre>{JSON.stringify(error, null, 2)}</pre>;
 
-  const getId = () => {};
   return (
     <div className="grid grid-cols-4 gap-5 p-4  container mx-auto ">
       {data?.hostel?.map((hos) => (
-        <Link to="View-hostel" key={hos._id} onClick={getId}>
+        <Link
+          to="View-hostel"
+          key={hos._id}
+          onClick={() => {
+            localStorage.setItem("id", hos._id);
+          }}
+        >
           <Hostel className="" name={hos.hostel_name} imgUrl={hos.image} />
         </Link>
       ))}
