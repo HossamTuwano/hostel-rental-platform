@@ -5,6 +5,7 @@ import { login } from "../../API/index";
 
 function Login() {
   const [isAuth, setIsAuth] = useState(false);
+  const [token, setToken] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState({
     email: "",
@@ -29,18 +30,19 @@ function Login() {
           body: formData,
         });
         const data = await response.json();
-        setUser(data);
-        setIsLoading(false);
-        console.log(data);
-        console.log(data.success);
 
-        if (data.success) {
-          navigate("/");
-        } else {
-          alert("wrong email or password");
-        }
+        setUser(data);
+        setToken(data.token);
+        setIsLoading(false);
+        setIsAuth(true);
+
+        // if (data.success) {
+        //   navigate("/");
+        // } else {
+        //   alert("wrong email or password");
+        // }
       } catch (error) {
-        
+        console.log(error);
       }
     };
 
@@ -56,7 +58,7 @@ function Login() {
         <form className="flex flex-col" onSubmit={handleSubmit}>
           <div className="title mb-5">
             <h1 className="text-4xl px-10">
-              <span className="text-cyan-900  font-bold">Welcome.</span>{" "}
+              <span className="text-cyan-900  font-bold">Welcome</span>{" "}
               <span className="font-light text-gray-700">Please Login</span>
             </h1>
           </div>
