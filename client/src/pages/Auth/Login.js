@@ -35,6 +35,15 @@ function Login() {
         setToken(data.token);
         setIsLoading(false);
         setIsAuth(true);
+        console.log(data);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("userId", data.user.id);
+        const remainingMilliseconds = 60 * 60 * 1000;
+        const expiryDate = new Date(
+          new Date().getTime() + remainingMilliseconds
+        );
+        localStorage.setItem("expiryDate", expiryDate.toISOString());
+        setAutoLogout(remainingMilliseconds);
 
         // if (data.success) {
         //   navigate("/");
@@ -48,6 +57,20 @@ function Login() {
 
     loginUser();
   }
+
+  const setAutoLogout = (milliseconds) => {
+    setTimeout(() => {
+      logoutHandler();
+    }, milliseconds);
+  };
+
+  const logoutHandler = () => {
+    setIsAuth(false);
+    setToken(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("expiryDate");
+    localStorage.removeItem("userId");
+  };
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
