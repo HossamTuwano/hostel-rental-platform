@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { login } from "../../API/index";
@@ -11,6 +11,24 @@ function Login() {
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const expiryDate = localStorage.getItem("expiryDate");
+    if (!token || !expiryDate) {
+      return;
+    }
+    if (new Date(expiryDate) <= new Date()) {
+      logoutHandler();
+      return;
+    }
+
+    const userId = localStorage.getItem("userId");
+    const remainingMilliseconds = new Date(expiryDate) - new Date().getTime();
+    setIsAuth(true);
+    setToken(token);
+    setAutoLogout(remainingMilliseconds);
+  }, []);
 
   const navigate = useNavigate();
 
