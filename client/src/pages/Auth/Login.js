@@ -23,20 +23,24 @@ function Login() {
 
     const loginUser = async () => {
       setIsLoading(true);
-      const response = await fetch(`${login}`, {
-        method: "POST",
-        body: formData,
-      });
-      const data = await response.json();
-      setUser(data);
-      setIsLoading(false);
-      console.log(data);
-      console.log(data.success);
+      try {
+        const response = await fetch(`${login}`, {
+          method: "POST",
+          body: formData,
+        });
+        const data = await response.json();
+        setUser(data);
+        setIsLoading(false);
+        console.log(data);
+        console.log(data.success);
 
-      if (data.success) {
-        navigate("/");
-      } else {
-        alert("wrong email or password");
+        if (data.success) {
+          navigate("/");
+        } else {
+          alert("wrong email or password");
+        }
+      } catch (error) {
+        
       }
     };
 
