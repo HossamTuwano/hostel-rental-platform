@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post("/add-hostel", hostelController.addHostel);
 router.get("/hostels", hostelController.getHostel);
+router.get("/hostel/:_id", hostelController.get_single_hostel);
 
 module.exports = router;
