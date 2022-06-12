@@ -33,7 +33,7 @@ function Signup() {
       setUser(data);
       console.log(data);
       if (data.success) {
-        navigate("/");
+        navigate("/login");
       } else {
         alert("fail");
       }

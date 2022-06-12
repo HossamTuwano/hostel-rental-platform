@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../API/index";
 
 function Login() {
+  const [isAuth, setIsAuth] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -20,12 +22,14 @@ function Login() {
     formData.append("password", user.password);
 
     const loginUser = async () => {
+      setIsLoading(true);
       const response = await fetch(`${login}`, {
         method: "POST",
         body: formData,
       });
       const data = await response.json();
       setUser(data);
+      setIsLoading(false);
       console.log(data);
       console.log(data.success);
 
@@ -78,7 +82,7 @@ function Login() {
               type="submit"
               className="bg-cyan-800 text-white font-bold py-1 px-4 rounded w-full cursor-pointer"
             >
-              Login
+              {isLoading ? "Loading..." : "Login"}
             </button>
           </div>
           <div className="sign-in px-4 text-center mb-5">

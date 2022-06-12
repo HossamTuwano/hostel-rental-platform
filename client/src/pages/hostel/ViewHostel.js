@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { HiLocationMarker } from "react-icons/hi";
+import { get_hostel } from "../../API";
+import useFetch from "../../hooks/useFetch";
+
+const id = localStorage.getItem("id");
+const url = `${get_hostel}/${id}`;
 
 function ViewHostel() {
+  const { data, loading, error } = useFetch(url);
+
+  if (loading) return <div>Loading ...</div>;
+  if (error) return <pre>erro</pre>;
+  console.log(data);
+
   return (
     <div className="flex justify-center flex-col items-center space-y-4">
       <div className="mt-3 bg-[#fff] w-[1400px] border px-3 py-4 rounded">
