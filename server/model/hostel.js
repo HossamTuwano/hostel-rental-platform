@@ -48,6 +48,11 @@ const HostelSchema = new Schema({
     type: String,
     required: true,
   },
+
+  hostel_owner : {
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  }
 });
 
 module.exports = mongoose.model("Hostel", HostelSchema);
