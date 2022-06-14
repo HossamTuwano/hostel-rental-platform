@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { update_hostel } from "../../API";
 
+const hostelId = localStorage.getItem("hostelId");
+console.log(hostelId);
+
 function UpdateHostel() {
   const [hostel, setHostel] = useState({
     hostel_name: "",
@@ -31,12 +34,9 @@ function UpdateHostel() {
     formData.append("bed_options", hostel.bed_options);
     formData.append("no_of_beds", hostel.no_of_beds);
 
-    const userId = localStorage.getItem("userId");
-    console.log(userId);
-
     const fetchHostel = async () => {
       try {
-        const res = await fetch(update_hostel + "62a7b4662388c62dc777fb6e", {
+        const res = await fetch(update_hostel + hostelId, {
           method: "PUT",
           headers: {
             // "Content-Type": "application/json",

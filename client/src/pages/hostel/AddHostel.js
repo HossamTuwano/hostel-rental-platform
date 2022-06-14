@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 function AddHostel() {
   const [hostel, setHostel] = useState({
@@ -34,11 +35,16 @@ function AddHostel() {
       try {
         const res = await fetch("http://localhost:8000/add-hostel", {
           method: "POST",
+          headers: {
+            // "Content-Type": "application/json",
+            auth: "Bearer " + localStorage.getItem("token"),
+          },
           body: formData,
         });
         const data = await res.json();
         setHostel(data);
-        console.log(data);
+        // console.log(data.hostel._id);
+        localStorage.setItem("hostelId", data.hostel._id);
       } catch (err) {
         console.log(err);
       }
@@ -52,7 +58,7 @@ function AddHostel() {
   };
 
   const handleImage = (e) => {
-    setHostel({ ...hostel, image: e.target.files });
+    setHostel({ ...hostel, image: e.target.files[0] });
   };
   return (
     <div>
@@ -60,7 +66,9 @@ function AddHostel() {
         <div className="addAccommodation w-full h-full flex flex-row p-0 m-0">
           <div className="flex w-2/12">
             <div className="sideNavItems flex flex-col ">
-              <p className="mb-4 px-5 text-shade"></p>
+              <p className="mb-4 px-5 text-shade">
+                <Link to="/update-hostel">Update</Link>
+              </p>
               <p className="mb-4 px-5"></p>
             </div>
           </div>

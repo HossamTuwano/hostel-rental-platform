@@ -25,6 +25,7 @@ exports.signup = (req, res, next) => {
   // checking if user already exists
 
   User.findOne({ email }).then((user) => {
+    
     if (user) {
       return res.status(400).json({ message: "user already exists" });
     } else {
@@ -52,9 +53,8 @@ exports.signup = (req, res, next) => {
 
             user.save().then((user) => {
               jwt.sign(
-                { jwt_id: user.id },
+                { jwt_id: user.id, role: user.role_name },
                 secret,
-                { expiresIn: 3600 },
                 (error, token) => {
                   if (error) throw error;
                   res.json({
@@ -68,16 +68,6 @@ exports.signup = (req, res, next) => {
               );
             });
           });
-          // .then((result) =>
-          //   res.status(201).json({ message: "User created!", success: true })
-          // )
-          // .catch((err) => {
-          //   if (!err.stataCode) {
-          //     err.stataCode = 500;
-          //   }
-
-          //   next(err);
-          // });
         }
       });
     }
@@ -94,7 +84,7 @@ exports.login = (req, res) => {
   User.findOne({ email: email }).then((user) => {
     if (!user) {
       return res.status(400).json({ message: "Could not find the user" });
-    }
+    }  
 
     bcrypt.compare(password, user.password).then((isMatch) => {
       if (!isMatch)
@@ -109,7 +99,7 @@ exports.login = (req, res) => {
         { expiresIn: 3600 },
         (err, token) => {
           if (err) throw err;
-          res.json({
+          res.set("auth", token).json({
             success: true,
             token,
             user: {

@@ -49,25 +49,26 @@ function Login() {
         });
         const data = await response.json();
 
-        setUser(data);
-        setToken(data.token);
-        setIsLoading(false);
-        setIsAuth(true);
-        console.log(data);
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("userId", data.user.id);
-        const remainingMilliseconds = 60 * 60 * 1000;
-        const expiryDate = new Date(
-          new Date().getTime() + remainingMilliseconds
-        );
-        localStorage.setItem("expiryDate", expiryDate.toISOString());
-        setAutoLogout(remainingMilliseconds);
-
-        // if (data.success) {
-        //   navigate("/");
-        // } else {
-        //   alert("wrong email or password");
-        // }
+        if (data.success) {
+          setUser(data);
+          setToken(data.token);
+          setIsLoading(false);
+          setIsAuth(true);
+          console.log(data);
+          localStorage.setItem("success", true);
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("userId", data.user.id);
+          console.log(data.user.id);
+          const remainingMilliseconds = 60 * 60  * 1000;
+          const expiryDate = new Date(
+            new Date().getTime() + remainingMilliseconds
+          );
+          localStorage.setItem("expiryDate", expiryDate.toISOString());
+          setAutoLogout(remainingMilliseconds);
+          navigate("/");
+        } else {
+          alert("wrong email or password");
+        }
       } catch (error) {
         console.log(error);
       }
@@ -79,15 +80,17 @@ function Login() {
   const setAutoLogout = (milliseconds) => {
     setTimeout(() => {
       logoutHandler();
+      console.log("timedout");
     }, milliseconds);
   };
 
   const logoutHandler = () => {
     setIsAuth(false);
-    setToken(null);
-    localStorage.removeItem("token");
+    // setToken(null);
+    // localStorage.removeItem("token");
     localStorage.removeItem("expiryDate");
-    localStorage.removeItem("userId");
+    // localStorage.removeItem("userId");
+    localStorage.removeItem("success");
   };
 
   const handleChange = (e) => {

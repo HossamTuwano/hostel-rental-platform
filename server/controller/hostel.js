@@ -1,17 +1,17 @@
 const Hostel = require("../model/hostel");
 
-const hostel_name = req.body.hostel_name;
-const contact_name = req.body.contact_name;
-const price = req.body.price;
-const phone = req.body.phone;
-const region = req.body.region;
-const city = req.body.city;
-const image = req.files.path;
-const room_type = req.body.room_type;
-const bed_options = req.body.bed_options;
-const no_of_beds = req.body.no_of_beds;
-
 exports.addHostel = (req, res) => {
+  const hostel_name = req.body.hostel_name;
+  const contact_name = req.body.contact_name;
+  const price = req.body.price;
+  const phone = req.body.phone;
+  const region = req.body.region;
+  const city = req.body.city;
+  const image = req.file.path;
+  const room_type = req.body.room_type;
+  const bed_options = req.body.bed_options;
+  const no_of_beds = req.body.no_of_beds;
+
   const hostel = new Hostel({
     hostel_name: hostel_name,
     contact_name: contact_name,
@@ -23,7 +23,9 @@ exports.addHostel = (req, res) => {
     room_type: room_type,
     bed_options: bed_options,
     no_of_beds: no_of_beds,
+    hostel_owner: req.user.id,
   });
+
   hostel
     .save()
     .then(() => res.status(201).json({ msg: "hostel added", hostel }))
@@ -63,4 +65,70 @@ exports.get_single_hostel = (req, res) => {
       .status(200)
       .json({ success: true, message: "hostel found", hostel });
   });
+};
+
+exports.update_hostel = (req, res) => {
+  const hostel_name = req.body.hostel_name;
+  const contact_name = req.body.contact_name;
+  const price = req.body.price;
+  const phone = req.body.phone;
+  const region = req.body.region;
+  const city = req.body.city;
+  const image = req.file.path;
+  const room_type = req.body.room_type;
+  const bed_options = req.body.bed_options;
+  const no_of_beds = req.body.no_of_beds;
+
+  const hostelId = req.params._id;
+
+  Hostel.findById(hostelId).then((post) => {
+    if (!post) {
+      const error = new Error("Could not find post.");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    post.hostel_name = hostel_name;
+    post.contact_name = contact_name;
+    post.price = price;
+    post.phone = phone;
+    post.region = region;
+    post.city = city;
+    post.image = image;
+    post.room_type = room_type;
+    post.bed_options = bed_options;
+    post.no_of_beds = no_of_beds;
+    // post.hostel_owner = hostel_owner;
+
+    return post
+      .save()
+      .then((result) => {
+        res.status(200).json({ message: "Post updated!", post: result });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+
+  // Hostel.findByIdAndUpdate({ _id: req.params._id }, (error, hostel) => {
+  //   if (error) {
+  //     return res.status(400).json({ error: error });
+  //   }
+  //   res.status(200).json({ hostel: newHostel });
+  //   return newHostel.save();
+  // });
+
+  // Hostel.findOneAndUpdate(
+  //   { _id: req.params._id },
+  //   { $set: hostel },
+  //   { new: true },
+  //   (err, hostel) => {
+  //     if (err) {
+  //       return res
+  //         .status(400)
+  //         .json({ error: true, message: "hostel not found", showErr: err });
+  //     }
+  //     res.status(200).json({ success: true, message: "hostel updated" });
+  //   }
+  // );
 };

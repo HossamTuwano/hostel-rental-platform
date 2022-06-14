@@ -26,12 +26,14 @@ function Signup() {
     formData.append("role_name", user.role_name);
 
     const addUser = async () => {
+      setAuthLoading(true);
       try {
         const response = await fetch(`${signup}`, {
           method: "POST",
           body: formData,
         });
         const data = await response.json();
+        setAuthLoading(false);
         setUser(data);
         console.log(data);
         if (data.success) {
@@ -129,7 +131,7 @@ function Signup() {
                   type="submit"
                   className="bg-cyan-800 text-white font-bold py-1 px-4 rounded w-full cursor-pointer"
                 >
-                  Register
+                  {authLoading ? "Loading..." : "Register"}
                 </button>
               </div>
 
