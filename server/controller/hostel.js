@@ -110,6 +110,10 @@ exports.update_hostel = (req, res) => {
       });
   });
 
+  exports.delete_hostel = (req, res) => {
+    res.send("delete");
+  };
+
   // Hostel.findByIdAndUpdate({ _id: req.params._id }, (error, hostel) => {
   //   if (error) {
   //     return res.status(400).json({ error: error });
