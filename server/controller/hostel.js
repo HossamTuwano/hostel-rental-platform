@@ -109,30 +109,17 @@ exports.update_hostel = (req, res) => {
         console.log(err);
       });
   });
+};
 
-  exports.delete_hostel = (req, res) => {
-    res.send("delete");
-  };
-
-  // Hostel.findByIdAndUpdate({ _id: req.params._id }, (error, hostel) => {
-  //   if (error) {
-  //     return res.status(400).json({ error: error });
-  //   }
-  //   res.status(200).json({ hostel: newHostel });
-  //   return newHostel.save();
-  // });
-
-  // Hostel.findOneAndUpdate(
-  //   { _id: req.params._id },
-  //   { $set: hostel },
-  //   { new: true },
-  //   (err, hostel) => {
-  //     if (err) {
-  //       return res
-  //         .status(400)
-  //         .json({ error: true, message: "hostel not found", showErr: err });
-  //     }
-  //     res.status(200).json({ success: true, message: "hostel updated" });
-  //   }
-  // );
+exports.delete_hostel = (req, res) => {
+  Hostel.findOneAndDelete({ _id: req.params._id }, (error, hostel) => {
+    if (error) {
+      return res
+        .json(200)
+        .json({ error: true, message: "failed to delete hostel" });
+    }
+    res
+      .status(200)
+      .json({ succes: true, message: "Hostel successfully deleted" });
+  });
 };
