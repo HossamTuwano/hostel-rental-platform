@@ -51,7 +51,7 @@ exports.search_hostel = (req, res) => {
   // }
   // res.status(400).json({ error: true });
 
-  Hostel.findOne({ hostel_name: name }, (error, hostel) => {
+  Hostel.find({ hostel_name: name }, (error, hostel) => {
     if (error) {
       return res
         .status(400)
