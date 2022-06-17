@@ -45,13 +45,21 @@ exports.getHostel = (req, res) => {
 };
 
 exports.search_hostel = (req, res) => {
-  Hostel.findOne({ hostel_name }, (err, hostel) => {
-    if (err) {
-      return res.status(400).json({ success: false, msg: "hostel not found" });
+  const name = new RegExp(req.params.hostel_name);
+  // if (name) {
+  //   return res.status(200).json({ param: name, succes: true });
+  // }
+  // res.status(400).json({ error: true });
+
+  Hostel.findOne({ hostel_name: name }, (error, hostel) => {
+    if (error) {
+      return res
+        .status(400)
+        .json({ error: true, message: "hostel not found", error: error });
     }
-    return res
+    res
       .status(200)
-      .json({ success: true, message: "hostel found", hostel });
+      .json({ success: true, message: "hostel found", hostel: hostel });
   });
 };
 
