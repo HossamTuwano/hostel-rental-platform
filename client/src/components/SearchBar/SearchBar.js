@@ -1,27 +1,37 @@
-import React from "react";
-import { AiOutlineSearch, AiTwotoneSafetyCertificate } from "react-icons/ai";
+import React, { useRef } from "react";
+import { AiOutlineSearch } from "react-icons/ai";
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 import { search_hostel } from "../../API";
-import useFetch from "../../hooks/useFetch";
 import SearchPage from "../../pages/hostel/SearchPage";
 
 function SearchBar(props) {
-  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setIsLoading] = useState();
+  const [error, setError] = useState();
   const [searchResult, setSearchResult] = useState();
+  const [hideSearch, setHideSearch] = useState(true);
+  const clear = useRef(null);
 
   const searchHostel = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       const response = await fetch(`${search_hostel}${searchQuery}`);
       const data = await response.json();
       setSearchResult(data);
+      setIsLoading(false);
     } catch (error) {
+      setError(error);
       console.log(error);
     }
+  };
+
+  const handleSearch = (e) => {
+    setHideSearch(false);
+    clear.current();
   };
 
   return (
@@ -38,9 +48,11 @@ function SearchBar(props) {
               </div>
               <input
                 type="text"
+                value={searchQuery}
                 className="rounded focus:outline-none h-9 w-full px-2 mr-3"
                 placeholder="Search for a place or accommodation"
                 onChange={(e) => setSearchQuery(e.target.value)}
+                ref={clear}
               />
             </div>
 
@@ -64,7 +76,16 @@ function SearchBar(props) {
 
       <div className="container mx-auto mt-16">
         {searchResult && (
-          <SearchPage results={searchResult} query={searchQuery} />
+          <div>
+            {hideSearch && (
+              <SearchPage
+                results={searchResult}
+                query={searchQuery}
+                click={handleSearch}
+                loading={loading}
+              />
+            )}
+          </div>
         )}
       </div>
     </div>
