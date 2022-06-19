@@ -9,19 +9,19 @@ const hostelRouter = require("./routes/hostel");
 const db = require("./config/config");
 
 dotenv.config({ path: "./.env" });
-const port = process.env.PORT;  
+const port = process.env.PORT;
 
 const app = express();
 
-const storage = multer.diskStorage({  
+const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "images");
+    cb(null, "images"); 
   },
   filename: (req, file, cb) => {
     const name = Date.now() + "-" + file.originalname;
     cb(null, file.fieldname + "-" + name);
   },
-});
+});   
 
 const fileFilter = (req, file, cb) => {
   if (
@@ -30,9 +30,9 @@ const fileFilter = (req, file, cb) => {
     file.mimetype === "image/jpg"
   ) {
     cb(null, true);
-  } else {  
+  } else {
     cb(null, false);
-  }   
+  }
 };
 
 app.use(cors());
@@ -49,4 +49,3 @@ db();
 app.listen(port, () => {
   console.log(`connected to localhost:${port}`);
 });
-  

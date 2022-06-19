@@ -54,16 +54,23 @@ function AddHostel() {
 
     const formData = new FormData();
 
+    const files = hostel.image;
+
     formData.append("hostel_name", hostel.hostel_name);
     formData.append("contact_name", hostel.contact_name);
     formData.append("price", hostel.price);
     formData.append("phone", hostel.phone);
     formData.append("region", hostel.region);
     formData.append("city", hostel.city);
-    formData.append("image", hostel.image);
+    // formData.append("image", hostel.image);
+    for (let i = 0; i < files.length; i += 1) {
+      formData.append("image", files[i]);
+      console.log(files[i]);
+    }
     formData.append("room_type", hostel.room_type);
     formData.append("bed_options", hostel.bed_options);
     formData.append("no_of_beds", hostel.no_of_beds);
+    console.log(hostel.image);
 
     const fetchHostel = async () => {
       try {
