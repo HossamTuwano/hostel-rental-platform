@@ -1,5 +1,5 @@
-const express = require("express");
 const dotenv = require("dotenv");
+const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const multer = require("multer");
@@ -15,13 +15,13 @@ const app = express();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "images");
+    cb(null, "images"); 
   },
   filename: (req, file, cb) => {
     const name = Date.now() + "-" + file.originalname;
     cb(null, file.fieldname + "-" + name);
   },
-});
+});   
 
 const fileFilter = (req, file, cb) => {
   if (
