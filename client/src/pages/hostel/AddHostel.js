@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { RiHomeGearFill } from "react-icons/ri";
 import ManageHostel from "./hostelManagement/ManageHostel";
+import { FileAddTwoTone, FileImageFilled } from "@ant-design/icons";
 
 function AddHostel() {
+  // const [image, setImage] = useState()
   const [hostel, setHostel] = useState({
     hostel_name: "",
     contact_name: "",
@@ -17,21 +19,35 @@ function AddHostel() {
     no_of_beds: "",
   });
 
-  const [fileDataUrl, setFileDataUrl] = useState();
-  const [showManager, setShowManager] = useState(true);
+  const [img, setImg] = useState([]);
+  // const [showManager, setShowManager] = useState(true);
 
   useEffect(() => {
-    if (hostel.image) {
-      const fileReader = new FileReader();
-      fileReader.onload = (e) => {
-        const { result } = e.target;
-        if (result) {
-          setFileDataUrl(result);
-        }
-      };
-      fileReader.readAsDataURL(hostel.image);
+    const images = [],
+      fileReaders = [];
+    const imageFiles = hostel.image;
+    if (imageFiles) {
+      imageFiles.forEach((file) => {
+        const fileReader = new FileReader();
+        fileReaders.push(fileReader);
+        fileReader.onload = (e) => {
+          const { result } = e.target;
+          if (result) {
+            images.push(result);
+          }
+          setImg(images);
+        };
+        fileReader.readAsDataURL(file);
+      });
     }
-  });
+    return () => {
+      fileReaders.forEach((fileReader) => {
+        if (fileReader.readyState === 1) {
+          fileReader.abort();
+        }
+      });
+    };
+  }, [hostel.image]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -76,12 +92,20 @@ function AddHostel() {
   };
 
   const handleImage = (e) => {
-    setHostel({ ...hostel, image: e.target.files[0] });
+    const { files } = e.target;
+    const validImages = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      validImages.push(file);
+    }
+    setHostel({ ...hostel, image: validImages });
   };
 
-  const handleManager = () => {
-    setShowManager(!showManager);
-  };
+  // const handleManager = () => {
+  //   setShowManager(!showManager);
+  // };
+
+  // console.log(hostel.image);
   return (
     <div>
       <div>
@@ -97,7 +121,7 @@ function AddHostel() {
             </div>
 
             <div className="">
-              <button className="flex items-center" onClick={handleManager}>
+              <button className="flex items-center">
                 <RiHomeGearFill className="mr-4 text-xl text-cyan-800" />{" "}
                 <div>Manage Hostels</div>
               </button>
@@ -120,7 +144,7 @@ function AddHostel() {
                     <h1>Add new Hostel</h1>
                   </div>
 
-                  {showManager ? (
+                  {true ? (
                     <div className="px-9">
                       {/* <!-- details --> */}
                       <form
@@ -221,16 +245,24 @@ function AddHostel() {
                               className="mt-4"
                               onChange={handleImage}
                             />
-
-                            {fileDataUrl ? (
-                              <div className="border w-[100px] h-[100px] overflow-hidden rounded-sm mt-3">
-                                <img
-                                  src={fileDataUrl}
-                                  alt=""
-                                  className="w-full h-full bg-center bg-no-repeat bg-cover"
-                                />
-                              </div>
-                            ) : null}
+                            <div className="flex space-x-2">
+                              {img.length > 0
+                                ? img.map((im, i) => {
+                                    return (
+                                      <div
+                                        key={i}
+                                        className="w-[100px] h-[100px] overflow-hidden rounded-sm mt-3 "
+                                      >
+                                        <img
+                                          src={im}
+                                          alt=""
+                                          className="w-full h-full bg-center bg-no-repeat bg-cover"
+                                        />
+                                      </div>
+                                    );
+                                  })
+                                : null}
+                            </div>
                           </div>
                         </fieldset>
 
@@ -297,10 +329,7 @@ function AddHostel() {
                       </form>
                     </div>
                   ) : (
-                    <div>
-                      <ManageHostel />
-                      cmon
-                    </div>
+                    ""
                   )}
                 </div>
               </div>
