@@ -1,5 +1,5 @@
-const express = require("express");
 const dotenv = require("dotenv");
+const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const multer = require("multer");
@@ -9,11 +9,11 @@ const hostelRouter = require("./routes/hostel");
 const db = require("./config/config");
 
 dotenv.config({ path: "./.env" });
-const port = process.env.PORT;
+const port = process.env.PORT;  
 
 const app = express();
 
-const storage = multer.diskStorage({
+const storage = multer.diskStorage({  
   destination: (req, file, cb) => {
     cb(null, "images");
   },
@@ -30,9 +30,9 @@ const fileFilter = (req, file, cb) => {
     file.mimetype === "image/jpg"
   ) {
     cb(null, true);
-  } else {
+  } else {  
     cb(null, false);
-  }
+  }   
 };
 
 app.use(cors());
@@ -49,3 +49,4 @@ db();
 app.listen(port, () => {
   console.log(`connected to localhost:${port}`);
 });
+  
