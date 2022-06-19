@@ -30,7 +30,7 @@ const HostelSchema = new Schema({
   },
 
   image: {
-    type: String,
+    type: Array,
     // required: true,
   },
 
@@ -49,10 +49,13 @@ const HostelSchema = new Schema({
     required: true,
   },
 
-  hostel_owner : {
+  hostel_owner: {
     type: Schema.Types.ObjectId,
-    ref: "User"
-  }
+    ref: "User",
+    autopopulate: { maxDepth: 1 },
+  },
 });
+
+HostelSchema.plugin(require("mongoose-autopopulate"));
 
 module.exports = mongoose.model("Hostel", HostelSchema);
