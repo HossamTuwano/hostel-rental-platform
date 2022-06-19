@@ -1,13 +1,20 @@
 const Hostel = require("../model/hostel");
 
 exports.addHostel = (req, res) => {
+  const img = [];
+
+  const imgloop = req.files.map((image) => {
+    img.push(image.path);
+  });
+
+  console.log(img);
   const hostel_name = req.body.hostel_name;
   const contact_name = req.body.contact_name;
   const price = req.body.price;
   const phone = req.body.phone;
   const region = req.body.region;
   const city = req.body.city;
-  const image = req.file.path;
+  const image = img;
   const room_type = req.body.room_type;
   const bed_options = req.body.bed_options;
   const no_of_beds = req.body.no_of_beds;
