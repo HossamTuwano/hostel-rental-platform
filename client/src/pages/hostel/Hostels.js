@@ -3,11 +3,16 @@ import { Link } from "react-router-dom";
 import { get_hostels } from "../../API";
 import useFetch from "../../hooks/useFetch";
 import Hostel from "./Hostel";
-
+import Loader from "../../components/Loader/Loader";
 const Hostels = () => {
   const { data, loading, error } = useFetch(`${get_hostels}`);
 
-  if (loading) return <h1>Loading...</h1>;
+  if (loading)
+    return (
+      <div className="border flex justify-center flex-col items-center absolute left-0 top-0 w-screen h-screen bg-white">
+        <Loader />
+      </div>
+    );
   if (error) <pre>{JSON.stringify(error, null, 2)}</pre>;
 
   return (
@@ -20,7 +25,13 @@ const Hostels = () => {
             localStorage.setItem("id", hos._id);
           }}
         >
-          <Hostel className="" name={hos.hostel_name} imgUrl={hos.image} />
+          <Hostel
+            className=""
+            name={hos.hostel_name}
+            imgUrl={hos.image[0]}
+            region={hos.region}
+            city={hos.city}
+          />
         </Link>
       ))}
     </div>
