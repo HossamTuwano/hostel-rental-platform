@@ -20,7 +20,7 @@ function AddHostel() {
   });
 
   const [img, setImg] = useState([]);
-  // const [showManager, setShowManager] = useState(true);
+  const [showManager, setShowManager] = useState(false);
 
   useEffect(() => {
     const images = [],
@@ -108,9 +108,9 @@ function AddHostel() {
     setHostel({ ...hostel, image: validImages });
   };
 
-  // const handleManager = () => {
-  //   setShowManager(!showManager);
-  // };
+  const handleManager = () => {
+    setShowManager((prev) => !prev);
+  };
 
   // console.log(hostel.image);
   return (
@@ -128,7 +128,7 @@ function AddHostel() {
             </div>
 
             <div className="">
-              <button className="flex items-center">
+              <button className="flex items-center" onClick={handleManager}>
                 <RiHomeGearFill className="mr-4 text-xl text-cyan-800" />{" "}
                 <div>Manage Hostels</div>
               </button>
@@ -148,10 +148,10 @@ function AddHostel() {
                 <div className="border rounded-lg h-4/5 w-12/12 m-5 bg-white">
                   {/* <!-- div header -->  */}
                   <div className=" px-3 py-3 border-b">
-                    <h1>Add new Hostel</h1>
+                    <h1 className="font-medium tracking-wide ">{!showManager ? "Add new Hostel" : "Manage Hostels"}</h1>
                   </div>
 
-                  {true ? (
+                  {!showManager ? (
                     <div className="px-9">
                       {/* <!-- details --> */}
                       <form
@@ -268,7 +268,7 @@ function AddHostel() {
                                       </div>
                                     );
                                   })
-                                : null}
+                                : ""}
                             </div>
                           </div>
                         </fieldset>
@@ -336,7 +336,7 @@ function AddHostel() {
                       </form>
                     </div>
                   ) : (
-                    ""
+                   <ManageHostel />
                   )}
                 </div>
               </div>
