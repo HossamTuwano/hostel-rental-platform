@@ -49,6 +49,11 @@ const HostelSchema = new Schema({
     required: true,
   },
 
+  availabilty: {
+    type: String,
+    required: true,
+  },
+
   hostel_owner: {
     type: Schema.Types.ObjectId,
     ref: "User",
