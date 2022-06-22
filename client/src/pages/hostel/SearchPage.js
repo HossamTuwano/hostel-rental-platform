@@ -12,7 +12,11 @@ function SearchPage(props) {
         <p>
           <span className=" mr-[600px]">
             {" "}
-            Search Result for  <span className="font-medium text-lg capitalize"> {`"${props.query}"`}{" "}</span> 
+            Search Result for{" "}
+            <span className="font-medium text-lg capitalize">
+              {" "}
+              {`"${props.query}"`}{" "}
+            </span>
           </span>
 
           <button
@@ -49,7 +53,9 @@ function SearchPage(props) {
               <p className="capitalize">
                 {hostel.region}, {hostel.city}
               </p>
-              <p className="capitalize mt-4 text-lg font-semibold">Available</p>
+              <p className="capitalize mt-4 text-lg font-semibold">
+                {hostel?.status === 0 ? "Available" : "Booked"}
+              </p>
             </div>
           </div>
 

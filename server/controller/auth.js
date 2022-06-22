@@ -3,6 +3,7 @@ const { validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const Role = require("../model/role");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer")
 require("dotenv/config");
 
 const secret = process.env.secret;
@@ -25,11 +26,10 @@ exports.signup = (req, res, next) => {
   // checking if user already exists
 
   User.findOne({ email }).then((user) => {
-    
     if (user) {
       return res.status(400).json({ message: "user already exists" });
     } else {
-      //   encryptin password
+      //   encrypting password
 
       const saltRounds = 10;
       const myPlainTextPassword = password;
@@ -84,7 +84,7 @@ exports.login = (req, res) => {
   User.findOne({ email: email }).then((user) => {
     if (!user) {
       return res.status(400).json({ message: "Could not find the user" });
-    }  
+    }
 
     bcrypt.compare(password, user.password).then((isMatch) => {
       if (!isMatch)

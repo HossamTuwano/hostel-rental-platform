@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import useFetch from "../../hooks";
 
-function Header() {
+function Header({ success }) {
   return (
     <div className="header w-full ">
       <div className="navigation  w-full">
@@ -21,14 +22,18 @@ function Header() {
               <Link to="/" className="mx-2">
                 {/* Logout */}
               </Link>
-              <Link to="/add-hostel" className="mx-2 ">
-                Add Hostel
+              <Link to="/manage-hostel" className="mx-2 ">
+                {localStorage.getItem("role") === "landlord"
+                  ? "Manage Hostel"
+                  : ""}
               </Link>
             </div>
 
             <Link to="/Signup" className="mx-2">
               Signup
             </Link>
+
+            {success ? <button>Logout</button> : ""}
           </div>
         </ul>
       </div>

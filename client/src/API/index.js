@@ -1,6 +1,12 @@
 export const add_hostel = "http://localhost:8000/add-hostel";
 export const get_hostels = "http://localhost:8000/hostels";
+export const search_hostel = "http://localhost:8000/hostels/";
 export const get_hostel = "http://localhost:8000/hostel";
 export const signup = "http://localhost:8000/signup";
 export const login = "http://localhost:8000/login";
 export const update_hostel = "http://localhost:8000/update_hostel/";
+export const delete_hostel = "http://localhost:8000/delete_hostel/";
+export const localhost = "http://localhost:8000/";
+export const update_status = "http://localhost:8000/update_status";
+export const get_booking_listings = "http://localhost:8000/get_booking_listing";
+export const accept_booking = "http://localhost:8000/accept_booking";

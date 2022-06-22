@@ -1,7 +1,7 @@
 import React from "react";
-import {localhost} from "../../API/index"
+import { localhost } from "../../API/index";
 
-function Hostel({
+function SimilarHostel({
   name,
   price,
   city,
@@ -34,4 +34,4 @@ function Hostel({
   );
 }
 
-export default Hostel;
+export default SimilarHostel;

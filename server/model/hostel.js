@@ -44,12 +44,23 @@ const HostelSchema = new Schema({
     required: true,
   },
 
+  status: {
+    type: Number,
+    default: 0,
+  },
+
+  // stuId: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: "User",
+
+  // },
+
   no_of_beds: {
     type: String,
     required: true,
   },
 
-  availabilty: {
+  number_of_rooms: {
     type: String,
     required: true,
   },

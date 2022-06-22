@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { update_hostel } from "../../API";
 
 const hostelId = localStorage.getItem("hostelId");
-console.log(hostelId);
 
 function UpdateHostel() {
   const [hostel, setHostel] = useState({
@@ -46,7 +45,6 @@ function UpdateHostel() {
         });
         const data = await res.json();
         setHostel(data);
-        console.log(data);
       } catch (err) {
         console.log("err");
       }

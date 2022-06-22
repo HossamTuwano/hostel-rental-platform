@@ -1,0 +1,10 @@
+  {data?.hostel?.map((hos, i, arr) => {
+        if (arr.length - 1 === i) {
+          {
+            /* const images = hos.image.map((image) => {
+            console.log(image);
+          }); */
+          }
+          console.log(hos.image[0]);
+        }
+      })}

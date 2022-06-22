@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const name = Date.now() + "-" + file.originalname;
-    cb(null, file.fieldname + "-" + name);
+    cb(null, file.fieldname + "-" + name); 
   },
 });   
 
@@ -29,7 +29,7 @@ const fileFilter = (req, file, cb) => {
     file.mimetype === "image/jpeg" ||
     file.mimetype === "image/jpg"
   ) {
-    cb(null, true);
+    cb(null, true);  
   } else {
     cb(null, false);
   }
@@ -46,6 +46,6 @@ app.use(hostelRouter);
 
 db();
 
-app.listen(port, () => {
+app.listen(port, () => {  
   console.log(`connected to localhost:${port}`);
 });

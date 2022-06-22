@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { get_hostels } from "../../API";
-import { useFetch } from "../../hooks";
+import {useFetch} from "../../hooks/index";
 import Hostel from "./Hostel";
 import Loader from "../../components/Loader/Loader";
-const Hostels = () => {
-  const { data, loading, error } = useFetch(`${get_hostels}`);
+import SimilarHostel from "./SimilarHostel";
+import { RiSkipBackMiniLine } from "react-icons/ri";
+
+const SimilarHostels = ({ contact_name }) => {
+  const { data, loading, error } = useFetch(`${get_hostels}/${contact_name}`);
 
   if (loading)
     return (
@@ -25,7 +28,7 @@ const Hostels = () => {
             localStorage.setItem("id", hos._id);
           }}
         >
-          <Hostel
+          <SimilarHostel
             className=""
             name={hos.hostel_name}
             imgUrl={hos?.image[0]}
@@ -38,4 +41,4 @@ const Hostels = () => {
   );
 };
 
-export default Hostels;
+export default SimilarHostels;

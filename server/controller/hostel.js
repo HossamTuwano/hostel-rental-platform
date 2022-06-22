@@ -1,5 +1,7 @@
 const Hostel = require("../model/hostel");
 
+// adding hostel
+
 exports.addHostel = (req, res) => {
   const img = [];
 
@@ -18,6 +20,8 @@ exports.addHostel = (req, res) => {
   const room_type = req.body.room_type;
   const bed_options = req.body.bed_options;
   const no_of_beds = req.body.no_of_beds;
+  const number_of_rooms = req.body.number_of_rooms;
+  // const availabilty = req.body.availabilty
 
   const hostel = new Hostel({
     hostel_name: hostel_name,
@@ -31,6 +35,7 @@ exports.addHostel = (req, res) => {
     bed_options: bed_options,
     no_of_beds: no_of_beds,
     hostel_owner: req.user.id,
+    number_of_rooms: number_of_rooms,
   });
 
   hostel
@@ -38,6 +43,8 @@ exports.addHostel = (req, res) => {
     .then(() => res.status(201).json({ msg: "hostel added", hostel }))
     .catch((err) => console.log(err));
 };
+
+// getting all hostels
 
 exports.getHostel = (req, res) => {
   // res.send("yo");
@@ -70,15 +77,17 @@ exports.search_hostel = (req, res) => {
   });
 };
 
+// gettgin single hostel
+
 exports.get_single_hostel = (req, res) => {
   const _id = req.params._id;
   Hostel.findById(_id, (err, hostel) => {
     if (err) {
-      res.status(400).json({ success: false, message: "hostel not found" });
+      return res
+        .status(400)
+        .json({ success: false, message: "hostel not found" });
     }
-    return res
-      .status(200)
-      .json({ success: true, message: "hostel found", hostel });
+    res.status(200).json({ success: true, message: "hostel found", hostel });
   });
 };
 
@@ -93,26 +102,28 @@ exports.update_hostel = (req, res) => {
   const room_type = req.body.room_type;
   const bed_options = req.body.bed_options;
   const no_of_beds = req.body.no_of_beds;
+  const number_of_rooms = req.body.number_of_rooms;
 
   const hostelId = req.params._id;
 
-  Hostel.findById(hostelId).then((post) => {
-    if (!post) {
+  Hostel.findById(hostelId).then((hostel) => {
+    if (!hostel) {
       const error = new Error("Could not find post.");
       error.statusCode = 404;
       throw error;
     }
 
-    post.hostel_name = hostel_name;
-    post.contact_name = contact_name;
-    post.price = price;
-    post.phone = phone;
-    post.region = region;
-    post.city = city;
-    post.image = image;
-    post.room_type = room_type;
-    post.bed_options = bed_options;
-    post.no_of_beds = no_of_beds;
+    hostel.hostel_name = hostel_name;
+    hostel.contact_name = contact_name;
+    hostel.price = price;
+    hostel.phone = phone;
+    hostel.region = region;
+    hostel.city = city;
+    hostel.image = image;
+    hostel.room_type = room_type;
+    hostel.bed_options = bed_options;
+    hostel.no_of_beds = no_of_beds;
+
     // post.hostel_owner = hostel_owner;
 
     return post
@@ -130,11 +141,70 @@ exports.delete_hostel = (req, res) => {
   Hostel.findOneAndDelete({ _id: req.params._id }, (error, hostel) => {
     if (error) {
       return res
-        .json(200)
+        .json(400)
         .json({ error: true, message: "failed to delete hostel" });
     }
     res
       .status(200)
       .json({ succes: true, message: "Hostel successfully deleted" });
+  });
+};
+
+// api to update data
+
+exports.update_status = (req, res) => {
+  console.log(req.body.id);
+
+  Hostel.updateOne(
+    { _id: req.body.id,  },
+
+    { $set: { status: 1 } },
+    (error, status) => {
+      if (error) {
+        return res.status(400).json({ error: true, error: error });
+      }
+      res.status(200).json({ succes: true, status: status });
+    }
+  );
+};
+
+// accept booking
+
+exports.accept_booking = (req, res) => {
+  console.log(req.body.id);
+  console.log(req.body);
+
+  Hostel.updateOne(
+    { _id: req.body.id },
+
+    { $set: { status: 2 } },
+    (error, status) => {
+      if (error) {
+        return res.status(400).json({ error: true, error: error });
+      }
+      res.status(200).json({ succes: true, status: status });
+    }
+  );
+};
+
+exports.get_similar_hostels = (req, res) => {
+  Hostel.find({ contact_name: req.params.contact_name }, (error, hostel) => {
+    if (error) {
+      return res.status(400).json({ error: error });
+    }
+    res
+      .status(200)
+      .json({ success: true, hostel: hostel, message: "hostel found" });
+  });
+};
+
+exports.get_booking_listing = (req, res) => {
+  Hostel.find({$or:[{status: 1},{status: 2}]}, (error, hostel) => {
+    if (error) {
+      res
+        .status(200)
+        .json({ success: false, message: "could not find hostels" });
+    }
+    res.status(200).json({ msg: "hostel found", hostel });
   });
 };

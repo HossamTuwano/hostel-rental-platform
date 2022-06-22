@@ -58,8 +58,9 @@ function Login() {
           localStorage.setItem("success", true);
           localStorage.setItem("token", data.token);
           localStorage.setItem("userId", data.user.id);
+          localStorage.setItem("role", data.user.role.role_name);
           console.log(data.user.id);
-          const remainingMilliseconds = 60 * 60  * 1000;
+          const remainingMilliseconds = 100000000000;
           const expiryDate = new Date(
             new Date().getTime() + remainingMilliseconds
           );
@@ -80,17 +81,18 @@ function Login() {
   const setAutoLogout = (milliseconds) => {
     setTimeout(() => {
       logoutHandler();
-      console.log("timedout");
     }, milliseconds);
   };
 
   const logoutHandler = () => {
     setIsAuth(false);
-    // setToken(null);
-    // localStorage.removeItem("token");
+    setToken(null);
+    console.log("timeout");
+    localStorage.removeItem("token");
     localStorage.removeItem("expiryDate");
-    // localStorage.removeItem("userId");
+    localStorage.removeItem("userId");
     localStorage.removeItem("success");
+    localStorage.removeItem("role");
   };
 
   const handleChange = (e) => {

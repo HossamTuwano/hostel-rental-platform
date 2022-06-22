@@ -32,7 +32,7 @@ const HowTo = () => {
               <div>
                 <SearchIcon className="h-8 w-8 text-blue-500 opacity-80" />
 
-                <CheckIcon className="h-6 w-6 text-blue-500 absolute top-[662px] left-[433px] z-100" />
+                {/* <CheckIcon className="h-6 w-6 text-blue-500 absolute top-[662px] left-[433px] z-100" /> */}
               </div>
               <div className="font-medium w-[230px]  ">
                 <span className="capitalize">choose where</span> you want

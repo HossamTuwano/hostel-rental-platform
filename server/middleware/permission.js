@@ -19,7 +19,7 @@ exports.canUpdate = async (req, res, next) => {
 // verufy if owner delete hostel
 exports.canDelete = async (req, res, next) => {
   const hostel = await Hostel.findOne({ _id: req.params._id });
-  if (hostel.hostel_owner._id != req.user.id) {
+  if (hostel?.hostel_owner._id != req.user.id) {
     return res.status(401).json({
       error: true,
       message: "Not authorized!",

@@ -1,16 +1,17 @@
 import React from "react";
 import Banner from "../../components/Banner/Banner";
+import Footer from "../../components/Footer/Footer";
 import HowTo from "../../components/HowTo/Howto";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import Hostels from "../hostel/Hostels";
 
-function Home() {
+function Home(loading) {
   return (
     <div>
-  
       <div>
         <Banner />
-        <SearchBar />
+
+        <SearchBar resultData={""} />
       </div>
       <div className="border-none outline-none font-rubik text-gray-500 mt-4 py-2 px-3 text-center font-medium text-lg capitalize flex flex-col items-center md:mt-12 ">
         helping student to easily find places to live
@@ -24,8 +25,12 @@ function Home() {
         <div className="mb-[50px]">
           <HowTo />
         </div>
+
         <div className="">
           <Hostels />
+          <div>
+            <Footer />
+          </div>
         </div>
       </div>
     </div>
