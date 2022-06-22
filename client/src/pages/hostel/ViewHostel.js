@@ -10,6 +10,8 @@ import ConfirmBooking from "../../components/ConfimBooking";
 const id = localStorage.getItem("id");
 const url = `${get_hostel}/${id}`;
 
+const date = new Date();
+
 function ViewHostel(props) {
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -51,6 +53,42 @@ function ViewHostel(props) {
   if (error) return <pre>error</pre>;
   const hostel = data.hostel;
 
+  const postDate = hostel?.createdAt?.slice(0, 10);
+
+  const timePassed = new Date(postDate);
+
+  function timeSince(date) {
+    var seconds = Math.floor((new Date() - date) / 1000);
+
+    var interval = seconds / 31536000;
+
+    if (interval > 1) {
+      return Math.floor(interval) + " years";
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+      return Math.floor(interval) + " months";
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+      return Math.floor(interval) + " days";
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+      return Math.floor(interval) + " hours";
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+      return Math.floor(interval) + " minutes";
+    }
+    return Math.floor(seconds) + " seconds";
+  }
+  var aDay = 24 * 60 * 60 * 1000;
+
+  const hostelDateSince = timeSince(new Date(timePassed - aDay))
+  console.log(timeSince(new Date(timePassed - aDay)));
+  
+
   return (
     <div>
       {showConfirm && (
@@ -70,7 +108,7 @@ function ViewHostel(props) {
               <pre>{hostel?.hostel_name}</pre>
             </div>{" "}
             <div className="flex">
-              <div>2 months ago</div>{" "}
+              <div>Posted {hostelDateSince} Ago</div>{" "}
               <div className="ml-3 capitalize">
                 Dar es salaam :&nbsp; Mwenge
               </div>
@@ -81,7 +119,7 @@ function ViewHostel(props) {
           <div className="grid grid-cols-2 gap-x-[270px] mt-2">
             <div className="border-none overflow-hidden bg-gray-400 w-[800px] h-[500px] rounded">
               <img
-                src={`${localhost}${hostel?.image[2]}`}
+                src={`${localhost}${hostel?.image[0]}`}
                 alt=""
                 className="h-full w-full object-cover bg-no-repeat"
               />

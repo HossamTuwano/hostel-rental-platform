@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import { required, length, email } from "../../util/validator";
 import { login } from "../../API/index";
 
 function Login() {
@@ -96,6 +96,7 @@ function Login() {
   };
 
   const handleChange = (e) => {
+    
     setUser({ ...user, [e.target.name]: e.target.value });
   };
   return (
