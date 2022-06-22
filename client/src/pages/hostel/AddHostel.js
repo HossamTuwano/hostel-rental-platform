@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { RiHomeGearFill } from "react-icons/ri";
+import { useFetch } from "../../hooks";
+import { regions_api } from "../../API";
+import { useDeferredValue } from "react";
+import { ConsoleSqlOutlined } from "@ant-design/icons";
 
 const dropDown = ["post hostel", "my hostels", "booking listing"];
 
@@ -11,7 +15,8 @@ function AddHostel() {
     price: "",
     phone: "",
     region: "",
-    city: "",
+    district: "",
+    ward: "",
     image: "",
     room_type: "",
     bed_options: "",
@@ -20,7 +25,13 @@ function AddHostel() {
   });
 
   const [img, setImg] = useState([]);
-  const [showManager, setShowManager] = useState(false);
+
+  const [showLocation, setShowLocation] = useState();
+
+  const { data } = useFetch(regions_api);
+  const { district } = useFetch(`${regions_api}/${hostel.region}`);
+  const { ward } = useFetch(`${regions_api}/${hostel.region}`);
+  const { street } = useFetch(`${regions_api}/${hostel.region}`);
 
   useEffect(() => {
     const images = [],
@@ -61,7 +72,7 @@ function AddHostel() {
     formData.append("price", hostel.price);
     formData.append("phone", hostel.phone);
     formData.append("region", hostel.region);
-    formData.append("city", hostel.city);
+    formData.append("district", hostel.district);
     for (let i = 0; i < files.length; i += 1) {
       formData.append("image", files[i]);
       console.log(files[i]);
@@ -105,6 +116,9 @@ function AddHostel() {
     setHostel({ ...hostel, image: validImages });
   };
 
+  const regions = data.regions;
+  const dist = district.districts;
+  console.log(hostel.district);
   return (
     <div>
       {/* {!showManager ? ( */}
@@ -175,25 +189,36 @@ function AddHostel() {
               <div className="px-40">
                 <legend className="mb-2">Where is your property located</legend>
                 <div className="mb-4">
-                  <label htmlFor="region"></label>
-                  <input
-                    type="text"
-                    className="border focus:outline-none px-2"
-                    placeholder="Region"
-                    name="region"
+                  <select
                     onChange={handleChange}
-                  />
+                    name="region"
+                    class="form-select form-select-sm block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    aria-label=".form-select-sm example"
+                  >
+                    {regions?.map((region) => {
+                      return (
+                        <>
+                          <option>{region}</option>
+                        </>
+                      );
+                    })}
+                  </select>
                 </div>
                 <div className="mb-4">
-                  {" "}
-                  <label htmlFor="city"></label>
-                  <input
-                    type="text"
-                    className="border focus:outline-none px-2"
-                    name="city"
-                    placeholder="City"
+                  <select
                     onChange={handleChange}
-                  />
+                    name="district"
+                    class="form-select form-select-sm block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    aria-label=".form-select-sm example"
+                  >
+                    {dist?.map((distr) => {
+                      return (
+                        <>
+                          <option>{distr}</option>
+                        </>
+                      );
+                    })}
+                  </select>
                 </div>
 
                 <legend>How many rooms does your hostel have ?</legend>

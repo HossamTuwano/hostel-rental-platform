@@ -25,7 +25,15 @@ const HostelSchema = new Schema(
 
     region: { type: String, required: true },
 
-    city: {
+    district: {
+      type: String,
+      required: true,
+    },
+    ward: {
+      type: String,
+      required: true,
+    },
+    street: {
       type: String,
       required: true,
     },

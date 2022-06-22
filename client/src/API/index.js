@@ -10,3 +10,4 @@ export const localhost = "http://localhost:8000/";
 export const update_status = "http://localhost:8000/update_status";
 export const get_booking_listings = "http://localhost:8000/get_booking_listing";
 export const accept_booking = "http://localhost:8000/accept_booking";
+export const regions_api = "https://mtaa-api.herokuapp.com/api/tanzania";

@@ -15,12 +15,14 @@ exports.addHostel = (req, res) => {
   const price = req.body.price;
   const phone = req.body.phone;
   const region = req.body.region;
-  const city = req.body.city;
+  const district = req.body.district;
   const image = img;
   const room_type = req.body.room_type;
   const bed_options = req.body.bed_options;
   const no_of_beds = req.body.no_of_beds;
   const number_of_rooms = req.body.number_of_rooms;
+  const ward = req.body.ward;
+  const street = req.body.street;
   // const availabilty = req.body.availabilty
 
   const hostel = new Hostel({
@@ -29,13 +31,15 @@ exports.addHostel = (req, res) => {
     price: price,
     phone: phone,
     region: region,
-    city: city,
+    district: district,
     image: image,
     room_type: room_type,
     bed_options: bed_options,
     no_of_beds: no_of_beds,
     hostel_owner: req.user.id,
     number_of_rooms: number_of_rooms,
+    ward: ward,
+    street: street,
   });
 
   hostel
@@ -97,14 +101,15 @@ exports.update_hostel = (req, res) => {
   const price = req.body.price;
   const phone = req.body.phone;
   const region = req.body.region;
-  const city = req.body.city;
+  const district = req.body.district;
   const image = req.file.path;
   const room_type = req.body.room_type;
   const bed_options = req.body.bed_options;
   const no_of_beds = req.body.no_of_beds;
   const number_of_rooms = req.body.number_of_rooms;
-
+  const ward = req.body.ward;
   const hostelId = req.params._id;
+  const street = req.body.street;
 
   Hostel.findById(hostelId).then((hostel) => {
     if (!hostel) {
@@ -118,7 +123,7 @@ exports.update_hostel = (req, res) => {
     hostel.price = price;
     hostel.phone = phone;
     hostel.region = region;
-    hostel.city = city;
+    hostel.district = district;
     hostel.image = image;
     hostel.room_type = room_type;
     hostel.bed_options = bed_options;
@@ -156,7 +161,7 @@ exports.update_status = (req, res) => {
   console.log(req.body.id);
 
   Hostel.updateOne(
-    { _id: req.body.id,  },
+    { _id: req.body.id },
 
     { $set: { status: 1 } },
     (error, status) => {
@@ -199,7 +204,7 @@ exports.get_similar_hostels = (req, res) => {
 };
 
 exports.get_booking_listing = (req, res) => {
-  Hostel.find({$or:[{status: 1},{status: 2}]}, (error, hostel) => {
+  Hostel.find({ $or: [{ status: 1 }, { status: 2 }] }, (error, hostel) => {
     if (error) {
       res
         .status(200)

@@ -11,6 +11,7 @@ import SearchPage from "./pages/hostel/SearchPage";
 import { useEffect, useState } from "react";
 import { PrivateRoute, LoginPrivateRoute } from "./components/PrivateRoute";
 import ManageHostels from "./pages/hostel/hostelManagement/ManageHostels";
+import Location from "./components/Location";
 
 function App() {
   const [token, setToken] = useState();
@@ -51,6 +52,7 @@ function App() {
           }
         />
         <Route path="/search-page" element={<SearchPage />} />
+        <Route path="/location" element={<Location />} />
       </Routes>
     </div>
     // </store.Provider>

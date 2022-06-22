@@ -7,7 +7,7 @@ const authRouter = require("./routes/auth");
 const roleRouter = require("./routes/role");
 const hostelRouter = require("./routes/hostel");
 const db = require("./config/config");
-
+ 
 dotenv.config({ path: "./.env" });
 const port = process.env.PORT;
 

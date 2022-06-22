@@ -2,6 +2,9 @@ import { useEffect, useState, useCallback } from "react";
 
 export const useFetch = (uri) => {
   const [data, setData] = useState([]);
+  const [district, setDistrict] = useState([]);
+  const [ward, setWard] = useState([]);
+  const [street, setStreet] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
 
@@ -17,6 +20,10 @@ export const useFetch = (uri) => {
         });
         const result = await response.json();
         setData(result);
+        setDistrict(result);
+        setWard(result)
+        setStreet(result)
+       
         setLoading(false);
       } catch (error) {
         setError(error);
@@ -29,6 +36,9 @@ export const useFetch = (uri) => {
     data,
     loading,
     error,
+    district,
+    ward,
+    street,
   };
 };
 

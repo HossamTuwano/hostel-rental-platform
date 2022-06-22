@@ -56,6 +56,13 @@ function ViewHostel(props) {
   const postDate = hostel?.createdAt?.slice(0, 10);
 
   const timePassed = new Date(postDate);
+  
+  console.log(new Date(Date.now() - timePassed * 1000))  
+ 
+
+  // const currT = Date.now()  - timePassed
+
+  // console.log(new Date(currT))
 
   function timeSince(date) {
     var seconds = Math.floor((new Date() - date) / 1000);
@@ -85,14 +92,14 @@ function ViewHostel(props) {
   }
   var aDay = 24 * 60 * 60 * 1000;
 
-  const hostelDateSince = timeSince(new Date(timePassed - aDay))
-  console.log(timeSince(new Date(timePassed - aDay)));
-  
+  const hostelDateSince = timeSince(new Date(timePassed - aDay));
+  // console.log(currT)
+  // console.log(timeSince(new Date(Date.now() - new Date(currT))));   
 
   return (
     <div>
       {showConfirm && (
-        <div className="border absolute w-full h-screen flex justify-center flex-col items-center">
+        <div className="border absolute w-full h-screen flex justify-center flex-col items-center">  
           {" "}
           <ConfirmBooking />
         </div>
