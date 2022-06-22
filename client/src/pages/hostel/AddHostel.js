@@ -17,6 +17,7 @@ function AddHostel() {
     region: "",
     district: "",
     ward: "",
+    street: "",
     image: "",
     room_type: "",
     bed_options: "",
@@ -26,12 +27,16 @@ function AddHostel() {
 
   const [img, setImg] = useState([]);
 
-  const [showLocation, setShowLocation] = useState();
-
   const { data } = useFetch(regions_api);
+
   const { district } = useFetch(`${regions_api}/${hostel.region}`);
-  const { ward } = useFetch(`${regions_api}/${hostel.region}`);
-  const { street } = useFetch(`${regions_api}/${hostel.region}`);
+
+  const { ward } = useFetch(
+    `${regions_api}/${hostel.region}/${hostel.district}`
+  );
+  const { street } = useFetch(
+    `${regions_api}/${hostel.region}/${hostel.district}/${hostel.ward}`
+  );
 
   useEffect(() => {
     const images = [],
@@ -73,6 +78,8 @@ function AddHostel() {
     formData.append("phone", hostel.phone);
     formData.append("region", hostel.region);
     formData.append("district", hostel.district);
+    formData.append("ward", hostel.ward);
+    formData.append("street", hostel.street);
     for (let i = 0; i < files.length; i += 1) {
       formData.append("image", files[i]);
       console.log(files[i]);
@@ -99,7 +106,6 @@ function AddHostel() {
       }
     };
     fetchHostel();
-    console.log(hostel);
   }
 
   const handleChange = (e) => {
@@ -118,7 +124,8 @@ function AddHostel() {
 
   const regions = data.regions;
   const dist = district.districts;
-  console.log(hostel.district);
+  const hostelWard = ward.wards;
+  const hostelStreet = street.streets;
   return (
     <div>
       {/* {!showManager ? ( */}
@@ -220,10 +227,42 @@ function AddHostel() {
                     })}
                   </select>
                 </div>
+                <div className="mb-4">
+                  <select
+                    onChange={handleChange}
+                    name="ward"
+                    class="form-select form-select-sm block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    aria-label=".form-select-sm example"
+                  >
+                    {hostelWard?.map((ward) => {
+                      return (
+                        <>
+                          <option>{ward}</option>
+                        </>
+                      );
+                    })}
+                  </select>
+                </div>
+                <div className="mb-4">
+                  <select
+                    onChange={handleChange}
+                    name="street"
+                    class="form-select form-select-sm block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    aria-label=".form-select-sm example"
+                  >
+                    {hostelStreet?.map((street) => {
+                      return (
+                        <>
+                          <option>{street}</option>
+                        </>
+                      );
+                    })}
+                  </select>
+                </div>
 
                 <legend>How many rooms does your hostel have ?</legend>
                 <div className="mb-4">
-                  <label htmlFor="region"></label>
+                  <label></label>
                   <input
                     type="number"
                     className="border focus:outline-none px-2"
