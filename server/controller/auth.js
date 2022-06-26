@@ -1,4 +1,5 @@
 const User = require("../model/user");
+const crypto = require("crypto");
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const Role = require("../model/role");
@@ -143,5 +144,60 @@ exports.get_user = (req, res) => {
     } else {
       return res.status(200).json({ success: true, hostel });
     }
+  });
+};
+
+exports.post_reset = (req, res) => {
+  crypto.randomBytes(32, (err, buffer) => {
+    if (err) {
+      console.log(err);
+    }
+    const token = buffer.toString("hex");
+    User.findOne({ email: req.body.email }).then((user) => {
+      if (!user) {
+        return res.status(422).json({ error: true, message: "user not found" });
+      }
+
+      user.resetToken = token;
+      user.expireToken = Date.now() + 3600000;
+      user.save().then((result) => {
+        transporter.sendMail({
+          to: user.email,
+          from: `hostelrentalplatform@gmail.com`,
+          subject: "sign up succeeded",
+          html: `<h1>You requested a new password reset</h1>
+           <h5>Click on this  <a href="http://localhost:3000/reset/${token}"> link</a>
+        `,
+        });
+        res.json({ message: "check your email" });
+      });
+    });
+  });
+};
+
+exports.new_password = (req, res) => {
+  const newPassword = req.body.password;
+  const sentToken = req.body.token;
+
+  User.findOne({
+    resetToken: sentToken,
+    expireToken: { $gt: Date.now() },
+  }).then((user) => {
+    if (!user) {
+      return res
+        .status(422)
+        .json({ message: "Error Try Again Session Expired" });
+    }
+    bcrypt
+      .hash(newPassword, 12)
+      .then((hashedPassword) => {
+        user.password = hashedPassword;
+        user.resetToken = undefined;
+        user.expireToken = undefined;
+        user.save().then((savedUser) => {
+          res.json({ message: "Password Updated Successfully" });
+        });
+      })
+      .catch((error) => console.log(error));
   });
 };
