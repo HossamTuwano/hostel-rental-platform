@@ -3,9 +3,17 @@ const { validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const Role = require("../model/role");
 const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer")
+const nodemailer = require("nodemailer");
+const sendGridTransport = require("nodemailer-sendgrid-transport");
 require("dotenv/config");
 
+const transporter = nodemailer.createTransport(
+  sendGridTransport({
+    auth: {
+      api_key: `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 `,
+    },
+  })
+);
 const secret = process.env.secret;
 
 exports.signup = (req, res, next) => {
@@ -40,7 +48,7 @@ exports.signup = (req, res, next) => {
             .status(400)
             .json({ success: false, message: "could not find role id" });
         } else {
-          const id = result._id;
+          const id = result?._id;
           console.log(id);
           bcrypt.hash(myPlainTextPassword, saltRounds).then((hash) => {
             const user = new User({
@@ -52,6 +60,12 @@ exports.signup = (req, res, next) => {
             });
 
             user.save().then((user) => {
+              transporter.sendMail({
+                to: email,
+                from: `hostelrentalplatform@gmail.com`,
+                subject: "sign up succeeded",
+                html: `<h1>Thank You for Signing Up to Hostel Renting Platform</h1>`,
+              });
               jwt.sign(
                 { jwt_id: user.id, role: user.role_name },
                 secret,
@@ -67,6 +81,14 @@ exports.signup = (req, res, next) => {
                 }
               );
             });
+            // .then(
+            //   transporter.sendMail({
+            //     to: email,
+            //     from: `hostelrentalplatform@gmail.com`,
+            //     subject: "sign up succeeded",
+            //     html: `<h1>Thank for Signing Up</h1>`,
+            //   })
+            // );
           });
         }
       });
