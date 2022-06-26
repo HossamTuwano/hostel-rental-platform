@@ -86,62 +86,69 @@ function ManageHostel() {
           </tr>
         </thead>
         <tbody>
-          {data.hostel?.map((hostel) => (
-            <tr
-              className="odd:bg-[#f1f2f7]"
-              key={hostel._id}
-              onClick={() => setBookedId(hostel?._id)}
-            >
-              <td className="p-3 text-center capitalize tracking-wide">
-                {hostel.hostel_name}
-              </td>
-              <td className="p-3 text-center capitalize tracking-wide">
-                <span>Tsh</span>
-                {hostel.price}
-              </td>
-              <td className="p-3 text-center capitalize tracking-wide">
-                {(hostel?.status === 1 && "Pending") ||
-                  (hostel?.status === 2 && "Accepted")}
-              </td>
-              <td className="p-3 text-center capitalize tracking-wide">
-                2 Months Ago
-              </td>
-              <td className="p-3 text-center capitalize tracking-wide">
-                {hostel?.contact_name}
-              </td>
-              <td className="p-3 text-center capitalize tracking-wide">
-                {hostel?.phone}
-              </td>
-              <td className="p-3 text-center capitalize tracking-wide">
-                <form onSubmit={handleStatus}>
-                  <input
-                    type="number"
-                    value={id.id}
-                    className="text-black"
-                    name="id"
-                    readOnly
-                    hidden
-                  />
+          {data.hostel?.map((hostel, i) => (
+            <>
+              {!hostel ? (
+                <div>no hostel</div>
+              ) : (
+                <tr
+                  className="odd:bg-[#f1f2f7]"
+                  key={hostel._id}
+                  onClick={() => setBookedId(hostel?._id)}
+                >
+                  <td className="p-3 text-center capitalize tracking-wide">
+                    {hostel.hostel_name}
+                  </td>
+                  <td className="p-3 text-center capitalize tracking-wide">
+                    <span>Tsh</span>
+                    {hostel.price}
+                  </td>
+                  <td className="p-3 text-center capitalize tracking-wide">
+                    {(hostel?.status === 1 && "Pending") ||
+                      (hostel?.status === 2 && "Accepted")}
+                  </td>
+                  <td className="p-3 text-center capitalize tracking-wide">
+                    2 Months Ago
+                  </td>
+                  <td className="p-3 text-center capitalize tracking-wide">
+                    {hostel?.contact_name}
+                  </td>
+                  <td className="p-3 text-center capitalize tracking-wide">
+                    {hostel?.phone}
+                  </td>
+                  <td className="p-3 text-center capitalize tracking-wide">
+                    <form onSubmit={handleStatus}>
+                      <input
+                        type="number"
+                        value={id.id}
+                        className="text-black"
+                        name="id"
+                        readOnly
+                        hidden
+                      />
 
-                  <button
-                    title={
-                      (hostel?.status === 1 && "Click to send email notification to the student") ||
-                      (hostel?.status === 2 && "Email already sent")
-                    }
-                    disabled={
-                      (hostel?.status === 1 && false) ||
-                      (hostel?.status === 2 && true)
-                    }
-                    className={`capitalize font-medium shadow-sm rounded-md ${
-                      (hostel?.status === 1 && "bg-cyan-800") ||
-                      (hostel?.status === 2 && "bg-gray-400")
-                    } text-white px-3 py-2 `}
-                  >
-                    Accept
-                  </button>
-                </form>
-              </td>
-            </tr>
+                      <button
+                        title={
+                          (hostel?.status === 1 &&
+                            "Click to send email notification to the student") ||
+                          (hostel?.status === 2 && "Email already sent")
+                        }
+                        disabled={
+                          (hostel?.status === 1 && false) ||
+                          (hostel?.status === 2 && true)
+                        }
+                        className={`capitalize font-medium shadow-sm rounded-md ${
+                          (hostel?.status === 1 && "bg-cyan-800") ||
+                          (hostel?.status === 2 && "bg-gray-400")
+                        } text-white px-3 py-2 `}
+                      >
+                        Accept
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              )}
+            </>
           ))}
         </tbody>
       </table>

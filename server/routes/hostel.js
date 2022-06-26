@@ -10,6 +10,11 @@ const {
 const router = express.Router();
 
 router.post("/add-hostel", verifyUser, hostelController.addHostel);
+
+
+router.post("/hostels", hostelController.getHostel);
+
+
 router.get("/hostels", hostelController.getHostel);
 // delete hostel
 router.delete(
@@ -38,7 +43,10 @@ router.get("/hostels/:hostel_name", hostelController.search_hostel);
 
 // get similar hostel
 
-router.get("/hostels/:contact_name", hostelController.get_similar_hostels);
+router.get(
+  "/similar_hostels/:contact_name",
+  hostelController.get_similar_hostels
+);
 
 // get booking listing
 

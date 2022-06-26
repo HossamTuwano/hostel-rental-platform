@@ -52,7 +52,7 @@ function ManageHostels() {
 
             <div className="w-10/12 border-none  outline-none h-screen bg-[#F1F2F7] ">
               <div className="mb-9">
-                <div className="edit-accommodation_header mb-1 border bg-white flex justify-between py-6 px-9">
+                <div className="edit-accommodation_header mb-1 border bg-white flex justify-between py-3 px-9">
                   <div className="logo">HOSTEL RENTING SYSTEM</div>
                   <div className="profile">
                     <i className="fas fa-user"></i>

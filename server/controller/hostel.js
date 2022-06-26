@@ -52,14 +52,29 @@ exports.addHostel = (req, res) => {
 
 exports.getHostel = (req, res) => {
   // res.send("yo");
-  Hostel.find((error, hostel) => {
-    if (error) {
-      res
-        .status(200)
-        .json({ success: false, message: "could not find hostels" });
-    }
-    res.status(200).json({ msg: "hostel found", hostel });
-  });
+
+  const district = req.body.checkbox;
+
+  if (district) {
+    console.log(district);
+    Hostel.find({ district: district }, (error, hostel) => {
+      if (error) {
+        res
+          .status(200)
+          .json({ success: false, message: "could not find hostels" });
+      }
+      res.status(200).json({ msg: "hostel found", hostel });
+    });
+  } else {
+    Hostel.find((error, hostel) => {
+      if (error) {
+        res
+          .status(200)
+          .json({ success: false, message: "could not find hostels" });
+      }
+      res.status(200).json({ msg: "hostel found", hostel });
+    });
+  }
 };
 
 exports.search_hostel = (req, res) => {
@@ -158,12 +173,12 @@ exports.delete_hostel = (req, res) => {
 // api to update data
 
 exports.update_status = (req, res) => {
-  console.log(req.body.id);
+  console.log(req.body.stuid);
 
   Hostel.updateOne(
     { _id: req.body.id },
 
-    { $set: { status: 1 } },
+    { $set: { status: 1, stuId: req.body.stuid } },
     (error, status) => {
       if (error) {
         return res.status(400).json({ error: true, error: error });
@@ -177,7 +192,7 @@ exports.update_status = (req, res) => {
 
 exports.accept_booking = (req, res) => {
   console.log(req.body.id);
-  console.log(req.body);
+  // console.log(req.body.stuid);
 
   Hostel.updateOne(
     { _id: req.body.id },
@@ -192,14 +207,17 @@ exports.accept_booking = (req, res) => {
   );
 };
 
+// get similar hostel
+
 exports.get_similar_hostels = (req, res) => {
+  const contact_name = new RegExp(req.params.contact_name);
   Hostel.find({ contact_name: req.params.contact_name }, (error, hostel) => {
     if (error) {
       return res.status(400).json({ error: error });
     }
     res
       .status(200)
-      .json({ success: true, hostel: hostel, message: "hostel found" });
+      .json({ success: true, hostel: hostel, message: "similar hostel found" });
   });
 };
 

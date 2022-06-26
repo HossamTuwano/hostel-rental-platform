@@ -1,11 +1,14 @@
 import React from "react";
-import {localhost} from "../../API/index"
+import { localhost } from "../../API/index";
+import { FaBed } from "react-icons/fa";
 
 function Hostel({
   name,
   price,
-  city,
+  street,
   region,
+  district,
+  ward,
   roomType,
   phone,
   contactName,
@@ -26,9 +29,13 @@ function Hostel({
         <p className="font-medium text-xl">{name}</p>
         <p className="text-lg">
           <span>
-            {city},{region}
+            {district}, {region}
           </span>
         </p>
+
+        <div className="flex items-center space-x-2">
+          <FaBed /> <span>{noOfBeds}</span>
+        </div>
       </div>
     </div>
   );

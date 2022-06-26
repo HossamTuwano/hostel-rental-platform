@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { RiHomeGearFill } from "react-icons/ri";
+import { BsArrowRight } from "react-icons/bs";
 import { useFetch } from "../../hooks";
 import { regions_api } from "../../API";
 import { useDeferredValue } from "react";
 import { ConsoleSqlOutlined } from "@ant-design/icons";
+import ConfirmBooking from "../../components/ConfimBooking";
 
 const dropDown = ["post hostel", "my hostels", "booking listing"];
 
@@ -24,6 +26,8 @@ function AddHostel() {
     no_of_beds: "",
     number_of_rooms: "",
   });
+
+  const [loading, setLoading] = useState(false);
 
   const [img, setImg] = useState([]);
 
@@ -80,7 +84,7 @@ function AddHostel() {
     formData.append("district", hostel.district);
     formData.append("ward", hostel.ward);
     formData.append("street", hostel.street);
-    for (let i = 0; i < files.length; i += 1) {
+    for (let i = 0; i < files?.length; i += 1) {
       formData.append("image", files[i]);
       console.log(files[i]);
     }
@@ -91,6 +95,7 @@ function AddHostel() {
 
     const fetchHostel = async () => {
       try {
+        setLoading(true);
         const res = await fetch("http://localhost:8000/add-hostel", {
           method: "POST",
           headers: {
@@ -100,6 +105,7 @@ function AddHostel() {
         });
         const data = await res.json();
         setHostel(data);
+        setLoading(false);
         localStorage.setItem("hostelId", data.hostel._id);
       } catch (err) {
         console.log(err);
@@ -128,44 +134,54 @@ function AddHostel() {
   const hostelStreet = street.streets;
   return (
     <div>
+      {" "}
+      {loading && (
+        <div
+          className="absolute w-full top-0 left-0 h-screen flex justify-center items-center"
+          onClick={() => setLoading((prev) => !prev)}
+        >
+          {" "}
+          <ConfirmBooking message={"hostel added"} />{" "}
+        </div>
+      )}
       {/* {!showManager ? ( */}
-      <div className="px-9">
+      <div className="px-9 py-3">
         {/* <!-- details --> */}
         <form
-          className="flex justify-around mt-9 flex-col"
+          className="flex justify-around mt-4 flex-col"
           onSubmit={handleSubmit}
         >
           {/* <!-- property name --> */}
 
-          <fieldset className="border p-7 rounded-md mb-4">
+          <fieldset className="border p-4 rounded-md mb-7">
             <div className="flex flex-col ">
-              <legend className="mb-2">
+              <legend className="mb-2 text-cyan-800 font-medium">
                 What is the name of your Property
               </legend>
               <input
-                className="border focus:outline-none w-10/12 h-11 mb-2 px-2"
+                className="border focus:outline-cyan-800 w-10/12 h-11 mb-2 px-2 bg-[#f1f2f7] rounded"
                 type="text"
                 placeholder="Name"
                 name="hostel_name"
                 onChange={handleChange}
               />
-              <span>
-                Guest will see this name when they search for a place to stay o
+              <span className="text-cyan-800 font-medium">
+                Guests will see this name when they search for a place to stay
               </span>
             </div>
           </fieldset>
 
-          <fieldset className="border p-5 rounded-md mb-4 flex flex-col">
-            <div className="flex justify-between">
+          <fieldset className="border p-3 rounded-md mb-7 flex flex-col">
+            <div className="flex justify-between space-x-8">
               <div>
-                <legend className="mb-2">
+                <legend className="mb-2 text-cyan-800 font-medium">
                   What are the contact details for this property
                 </legend>
                 <div className="mb-4">
                   <label htmlFor="contact-name"></label>
                   <input
                     type="text"
-                    className="border focus:outline-none px-2"
+                    className="border focus:outline-cyan-800 bg-[#f1f2f7] rounded px-3 py-2"
                     placeholder="Contact Name"
                     name="contact_name"
                     onChange={handleChange}
@@ -175,7 +191,7 @@ function AddHostel() {
                   <label htmlFor="price"></label>
                   <input
                     type="text"
-                    className="border focus:outline-none px-2"
+                    className="border focus:outline-cyan-800 bg-[#f1f2f7] rounded px-3 py-2"
                     placeholder="Hostel Price"
                     name="price"
                     onChange={handleChange}
@@ -186,102 +202,110 @@ function AddHostel() {
                   <label htmlFor="phone-number"></label>
                   <input
                     type="text"
-                    className="border focus:outline-none px-2"
+                    className="border focus:outline-cyan-800 bg-[#f1f2f7] rounded px-3 py-2"
                     placeholder="Phone Number"
                     name="phone"
                     onChange={handleChange}
                   />
                 </div>
               </div>
-              <div className="px-40">
-                <legend className="mb-2">Where is your property located</legend>
-                <div className="mb-4">
-                  <select
-                    onChange={handleChange}
-                    name="region"
-                    class="form-select form-select-sm block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    aria-label=".form-select-sm example"
-                  >
-                    {regions?.map((region) => {
-                      return (
-                        <>
-                          <option>{region}</option>
-                        </>
-                      );
-                    })}
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <select
-                    onChange={handleChange}
-                    name="district"
-                    class="form-select form-select-sm block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    aria-label=".form-select-sm example"
-                  >
-                    {dist?.map((distr) => {
-                      return (
-                        <>
-                          <option>{distr}</option>
-                        </>
-                      );
-                    })}
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <select
-                    onChange={handleChange}
-                    name="ward"
-                    class="form-select form-select-sm block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    aria-label=".form-select-sm example"
-                  >
-                    {hostelWard?.map((ward) => {
-                      return (
-                        <>
-                          <option>{ward}</option>
-                        </>
-                      );
-                    })}
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <select
-                    onChange={handleChange}
-                    name="street"
-                    class="form-select form-select-sm block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    aria-label=".form-select-sm example"
-                  >
-                    {hostelStreet?.map((street) => {
-                      return (
-                        <>
-                          <option>{street}</option>
-                        </>
-                      );
-                    })}
-                  </select>
+              <div className=" flex  space-x-20  w-full ">
+                <div className="">
+                  <legend className="mb-8 text-cyan-800 font-medium ">
+                    Where is your property located
+                  </legend>
+                  <div className="flex space-x-4  w-[400px]">
+                    <div className=" w-full">
+                      <div className="mb-4 w-full">
+                        <select
+                          onChange={handleChange}
+                          name="region"
+                          className="border focus:outline-cyan-800 bg-[#f1f2f7] rounded px-3 py-2 w-[200px] text-gray-400"
+                          aria-label=".form-select-sm example"
+                        >
+                          <option defaultValue={true}>Region</option>
+                          {regions?.map((region, i) => {
+                            return <option key={i}>{region}</option>;
+                          })}
+                        </select>
+                      </div>
+                      <div className="mb-4">
+                        <select
+                          onChange={handleChange}
+                          name="district"
+                          className="border focus:outline-cyan-800 bg-[#f1f2f7] rounded px-3 py-2 w-[200px] text-gray-400"
+                          aria-label=".form-select-sm example"
+                        >
+                          <option defaultValue={true}>District</option>
+                          {dist?.map((distr, i) => {
+                            return <option key={i}>{distr}</option>;
+                          })}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="w-[400px]">
+                      <div className="mb-4 w-full">
+                        <select
+                          onChange={handleChange}
+                          name="ward"
+                          className="border focus:outline-cyan-800 bg-[#f1f2f7] rounded px-3 py-2 w-[200px]"
+                          aria-label=".form-select-sm example"
+                        >
+                          <option defaultValue={true}>Ward</option>
+                          {hostelWard?.map((ward, i) => {
+                            return <option key={i}>{ward}</option>;
+                          })}
+                        </select>
+                      </div>
+                      <div className="mb-4">
+                        <select
+                          onChange={handleChange}
+                          name="street"
+                          className="border focus:outline-cyan-800 bg-[#f1f2f7] rounded px-3 py-2 w-[200px]"
+                          aria-label=".form-select-sm example"
+                        >
+                          <option defaultValue={true}>Street</option>
+                          {hostelStreet?.map((street, i) => {
+                            return <option key={i}>{street}</option>;
+                          })}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <legend>How many rooms does your hostel have ?</legend>
-                <div className="mb-4">
-                  <label></label>
-                  <input
-                    type="number"
-                    className="border focus:outline-none px-2"
-                    placeholder="Enter Number of rooms"
-                    name="number_of_rooms"
-                    onChange={handleChange}
-                  />
+                <div>
+                  {" "}
+                  <legend className="mb-8 text-cyan-800 font-medium">
+                    How many rooms does your hostel have ?
+                  </legend>
+                  <div className="mb-4">
+                    <label></label>
+                    <input
+                      type="number"
+                      className="border focus:outline-cyan-800 bg-[#f1f2f7] rounded px-3 py-2 w-[200px] text-gray-400"
+                      placeholder="Enter Number of rooms"
+                      name="number_of_rooms"
+                      onChange={handleChange}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="border-t w-full ">
+            <div className="border-4 border-dashed border-[#f1f2f7]  rounded w-full p-2 cursor-pointer bg-cyan-800/20  ">
+              <div className=" flex justify-center tracking-wide font-medium text-cyan-900">
+                Add picture showing your hostel, should include toilets, room
+                inside view, building view and other amenities
+              </div>
               <input
                 multiple
                 type="file"
                 name="image"
-                className="mt-4"
+                className="opacity-0 w-[1420px] h-[115px] absolute border border-red-900 cursor-pointer "
                 onChange={handleImage}
               />
-              <div className="flex space-x-2">
+              <div className="flex space-x-2  justify-center">
                 {img.length > 0
                   ? img.map((im, i) => {
                       return (
@@ -302,14 +326,19 @@ function AddHostel() {
             </div>
           </fieldset>
 
-          <fieldset className="border rounded-md p-5">
+          <fieldset className="border rounded-md p-5 mb-3">
             <div>
-              <legend className="mb-1">Room details</legend>
+              <legend className="mb-1 text-cyan-800 font-medium">
+                Room details
+              </legend>
               <div className="flex justify-between">
-                <div>
-                  <label htmlFor="">Room Type</label>
-                  <select name="room_type" onChange={handleChange}>
-                    <option>--select--</option>
+                <div className="flex flex-col">
+                  <select
+                    name="room_type"
+                    onChange={handleChange}
+                    className="border focus:outline-cyan-800 bg-[#f1f2f7] rounded px-3 py-2 w-[200px]"
+                  >
+                    <option>--Room Type--</option>
 
                     <option>single</option>
                     <option>double</option>
@@ -317,28 +346,26 @@ function AddHostel() {
                     <option>quad</option>
                   </select>
                 </div>
-                <div>
-                  <label htmlFor="bed-options">Bed Options</label>
+                <div className="flex flex-col">
                   <select
                     name="bed_options"
-                    className="border focus:outline-none px-2 w-44 "
+                    className="border focus:outline-cyan-800 bg-[#f1f2f7] rounded px-3 py-2 w-[200px]"
                     onChange={handleChange}
                   >
-                    <option value="">--select--</option>
+                    <option value="">--Bed Options--</option>
 
                     <option value="doulbe-decker">double-decker</option>
                     <option value="full-size">full size</option>
                   </select>
                 </div>
-                <div>
-                  <label htmlFor="number-of-beds">Number of Beds</label>
+                <div className="flex flex-col">
                   <select
                     name="no_of_beds"
                     id="beds"
-                    className="border focus:outline-none px-2 w-44 "
+                    className="border focus:outline-cyan-800 bg-[#f1f2f7] rounded px-3 py-2 w-[200px] "
                     onChange={handleChange}
                   >
-                    <option value="">--select--</option>
+                    <option value="">--Number of Beds--</option>
 
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -351,9 +378,12 @@ function AddHostel() {
           </fieldset>
           <button
             type="submit"
-            className="mt-4  bg-cyan-800 h-8 mb-6 text-white rounded-sm "
+            className="mt-4 mb-4 cursor-pointer text-center flex border justify-center items-center text-xl space-x-3 hover:bg-cyan-900 hover:shadow-lg active:shadow-lg transition duration-150 ease-in-out active:bg-cyan-900 focus:bg-cyan-800  focus:shadow-lg focus:outline-none  focus:ring-0 bg-cyan-800 h-10 BsArrowRight text-white rounded-full  "
           >
-            Submit
+            <div className="flex items-center space-x-3 py">
+              {" "}
+              <span>Submit</span> <BsArrowRight />
+            </div>
           </button>
         </form>
       </div>

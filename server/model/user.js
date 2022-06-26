@@ -10,7 +10,7 @@ const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
-  }, 
+  },
   phone: {
     type: String,
     required: true,
@@ -21,13 +21,14 @@ const UserSchema = new Schema({
     ref: "Role",
     autopopulate: true,
   },
-  password: { 
+
+  resetToken: String,
+  expireToken: Date,
+  password: {
     type: String,
     require: true,
   },
 });
-
-
 
 UserSchema.plugin(require("mongoose-autopopulate"));
 module.exports = mongoose.model("User", UserSchema);

@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
 export const PrivateRoute = ({ token, children }) => {
-  console.log("u");
-  console.log(token);
-  if (!token) {
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
+
+  console.log(isAuth);
+  if (!isAuth) {
     return <Navigate to="/" replace />;
   }
 
@@ -12,7 +14,8 @@ export const PrivateRoute = ({ token, children }) => {
 };
 
 export const LoginPrivateRoute = ({ token, children }) => {
-  if (!token) {
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
+  if (!isAuth) {
     return <Navigate to="/login" replace />;
   }
 

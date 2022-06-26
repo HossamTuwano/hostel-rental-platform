@@ -1,10 +1,11 @@
 import React from "react";
 import { localhost } from "../../API/index";
+import { FaBed } from "react-icons/fa";
 
 function SimilarHostel({
   name,
   price,
-  city,
+  district,
   region,
   roomType,
   phone,
@@ -23,12 +24,18 @@ function SimilarHostel({
         />
       </div>
       <div className="p-2">
-        <p className="font-medium text-xl">{name}</p>
+        <p className="font-medium text-xl  tracking-wider text-cyan-900">
+          {name}
+        </p>
         <p className="text-lg">
-          <span>
-            {city},{region}
+          <span className="font-medium tracking-wider text-cyan-900">
+            {district}, {region}
           </span>
         </p>
+
+        <div className="flex items-center space-x-2">
+          <FaBed /> <span>{noOfBeds}</span>
+        </div>
       </div>
     </div>
   );

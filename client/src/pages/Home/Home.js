@@ -1,5 +1,6 @@
 import React from "react";
 import Banner from "../../components/Banner/Banner";
+import Filter from "../../components/Filter";
 import Footer from "../../components/Footer/Footer";
 import HowTo from "../../components/HowTo/Howto";
 import SearchBar from "../../components/SearchBar/SearchBar";
@@ -22,15 +23,20 @@ function Home(loading) {
           browse available hostels
         </h4>
 
-        <div className="mb-[50px]">
+        <div className="mb-[50px] ">
           <HowTo />
         </div>
 
-        <div className="">
-          <Hostels />
-          <div>
-            <Footer />
+        <div className="flex justify-end">
+          <div className=" w-[450px] text-2xl tracking-wide capitalize font-bold text-cyan-800 font-rubik">
+            {" "}
+            filter by location
           </div>
+        </div>
+
+        <div className="flex justify-center  space-x-3 ">
+          <Hostels />
+          {/* <Filter /> */}
         </div>
       </div>
     </div>

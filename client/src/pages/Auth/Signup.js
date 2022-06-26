@@ -1,11 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BsHouseDoor } from "react-icons/bs";
-import { signup } from "../../API/index";
+import { signup, unis } from "../../API/index";
+import { useFetch } from "../../hooks";
 
 function Signup() {
   const [isAuth, setIsAuth] = useState(false);
+  const [uni, setUni] = useState();
   const [authLoading, setAuthLoading] = useState(false);
+
+  useEffect(() => {
+    fetch(unis, {
+      headers: {
+        // auth: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+      .then((data) => data.json())
+      .then((data) => setUni(data))
+      .then((error) => console.log(error));
+  }, []);
+
+  uni?.map((unis) => console.log(unis.name));
+
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -53,16 +69,17 @@ function Signup() {
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
+
   return (
     <div className="form w-full h-screen flex justify-center items-center bg-[#f7f5f5] ">
-      <div className="flex min-w-[800px] min-h-[450px] border rounded-md shadow">
-        <div className="basis-[450px] bg-white flex justify-center ">
+      <div className="flex min-w-[1000px] min-h-[450px] border rounded-md shadow">
+        <div className="basis-[750px] bg-white flex justify-center ">
           <form
             className="flex flex-col justify-center"
             onSubmit={handleSubmit}
           >
             <div className="flex flex-col  ">
-              <div className="title mb-5">
+              <div className="title mb-5  flex justify-center">
                 <h1 className="text-4xl px-10">
                   <span className="text-cyan-900  font-bold">Create</span>{" "}
                   <span className="font-light text-gray-700">Account</span>
@@ -111,6 +128,20 @@ function Signup() {
                   onChange={handleChange}
                 />
               </div>
+              <div className="mb-4">
+                <select
+                  className="shadow rounded w-full  leading-tight focuse:shadow-outline py-1 px-2 border outline-none text-[#9ca3af] text-md"
+                  aria-label=".form-select-sm example"
+                  name="role_name"
+                  onChange={handleChange}
+                >
+                  <option defaultValue={true}>University</option>
+                  {uni?.map((uni, i) => {
+                    return <option key={i}>{uni.name}</option>;
+                  })}
+                </select>
+              </div>
+
               <div className="mb-4">
                 <label htmlFor="role_name" className="block"></label>
                 <select

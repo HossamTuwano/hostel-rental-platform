@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { required, length, email } from "../../util/validator";
-import { login } from "../../API/index";
+import { login_api } from "../../API/index";
+import { GlobalContext } from "../../context/global-context";
 
 function Login() {
   const [isAuth, setIsAuth] = useState(false);
-  const [token, setToken] = useState();
+  const [token, setToken] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
+
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -14,6 +17,7 @@ function Login() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     const expiryDate = localStorage.getItem("expiryDate");
     if (!token || !expiryDate) {
       return;
@@ -26,11 +30,13 @@ function Login() {
     const userId = localStorage.getItem("userId");
     const remainingMilliseconds = new Date(expiryDate) - new Date().getTime();
     setIsAuth(true);
-    setToken(token);
+    // setToken(token);
     setAutoLogout(remainingMilliseconds);
   }, []);
 
   const navigate = useNavigate();
+
+  const { tkn, role, userId, setTkn, setRole } = useContext(GlobalContext);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -43,7 +49,7 @@ function Login() {
     const loginUser = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`${login}`, {
+        const response = await fetch(`${login_api}`, {
           method: "POST",
           body: formData,
         });
@@ -52,15 +58,17 @@ function Login() {
         if (data.success) {
           setUser(data);
           setToken(data.token);
+          setTkn(data.token);
           setIsLoading(false);
+          setRole(data.user.role.role_name);
           setIsAuth(true);
           console.log(data);
-          localStorage.setItem("success", true);
+
           localStorage.setItem("token", data.token);
           localStorage.setItem("userId", data.user.id);
           localStorage.setItem("role", data.user.role.role_name);
-          console.log(data.user.id);
-          const remainingMilliseconds = 100000000000;
+
+          const remainingMilliseconds = 60 * 60 * 1000;
           const expiryDate = new Date(
             new Date().getTime() + remainingMilliseconds
           );
@@ -96,7 +104,6 @@ function Login() {
   };
 
   const handleChange = (e) => {
-    
     setUser({ ...user, [e.target.name]: e.target.value });
   };
   return (

@@ -58,11 +58,10 @@ const HostelSchema = new Schema(
       default: 0,
     },
 
-    // stuId: {
-    //   id: {
-    //     date: Date,
-    //   },
-    // },
+    stuId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
 
     no_of_beds: {
       type: String,

@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { get_hostels } from "../../API";
-import {useFetch} from "../../hooks/index";
+import { get_similar_hostel } from "../../API";
+import { useFetch } from "../../hooks/index";
 import Hostel from "./Hostel";
 import Loader from "../../components/Loader/Loader";
 import SimilarHostel from "./SimilarHostel";
 import { RiSkipBackMiniLine } from "react-icons/ri";
 
 const SimilarHostels = ({ contact_name }) => {
-  const { data, loading, error } = useFetch(`${get_hostels}/${contact_name}`);
+  const { data, loading, error } = useFetch(
+    `${get_similar_hostel}${contact_name}`
+  );
 
   if (loading)
     return (
@@ -22,7 +24,7 @@ const SimilarHostels = ({ contact_name }) => {
     <div className="grid grid-cols-4 gap-5 p-4  container mx-auto ">
       {data?.hostel?.map((hos) => (
         <Link
-          to="View-hostel"
+          to="View-hostel" 
           key={hos._id}
           onClick={() => {
             localStorage.setItem("id", hos._id);
@@ -33,7 +35,8 @@ const SimilarHostels = ({ contact_name }) => {
             name={hos.hostel_name}
             imgUrl={hos?.image[0]}
             region={hos.region}
-            city={hos.city}
+            district={hos.district}
+            noOfBeds={hos.noOfBeds}
           />
         </Link>
       ))}
