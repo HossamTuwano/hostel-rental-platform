@@ -7,24 +7,43 @@ import Loader from "../../components/Loader/Loader";
 import Footer from "../../components/Footer/Footer";
 import SimilarHostels from "./SimilarHostels";
 import ConfirmBooking from "../../components/ConfimBooking";
-const id = localStorage.getItem("id");
-const url = `${get_hostel}/${id}`;
+import { booking } from "../../actions/BookingActions";
+import { useDispatch, useSelector } from "react-redux";
+import ImageViewer from "../../components/ImageViewer/ImageViewer";
+import { IoChevronForwardSharp, IoChevronBackSharp } from "react-icons/io5";
+import { GiCancel } from "react-icons/gi";
 
 const date = new Date();
 
 function ViewHostel(props) {
+  const dispatch = useDispatch();
   const [showConfirm, setShowConfirm] = useState(false);
+  const [hostelId, setHostelId] = useState();
+  const [showImage, setShowImage] = useState(false);
+  const [images, setImages] = useState();
+  const [nextIndex, setNextIndex] = useState(1);
+  const [previousIndex, setPreviousIndex] = useState();
 
-  const { data, loading, error } = useFetch(
-    `${get_hostel}/${localStorage.getItem("id")}`
-  );
+  useEffect(() => {
+    setHostelId(localStorage.getItem("hostelId"));
+    if (showImage === true) {
+      document.body.style.overflow = "hidden";
+    }
+  }, [hostelId]);
+
+  const stuId = useSelector((state) => state.auth.user.id);
+
+  const { data, loading, error } = useFetch(`${get_hostel}/${hostelId}`);
 
   const id = {
-    id: data.hostel?._id,
+    id: hostelId,
+    stuid: stuId,
   };
 
   const handleStatus = (e) => {
     e.preventDefault();
+
+    const result = Object.assign(id);
 
     setShowConfirm((prev) => !prev);
 
@@ -32,16 +51,17 @@ function ViewHostel(props) {
       setShowConfirm((prev) => !prev);
     }, 1000);
 
-    const formData = new FormData();
+    // const formData = new FormData();
 
-    formData.append("id", id.id);
+    // formData.append("id", id.id);
 
-    fetch(`${update_status}`, {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((error) => console.log(error));
+    // fetch(`${update_status}`, {
+    //   method: "POST",
+    //   body: formData,
+    // })
+    //   .then((res) => res.json())
+    //   .then((error) => console.log(error));
+    dispatch(booking(result));
   };
 
   if (loading)
@@ -56,9 +76,8 @@ function ViewHostel(props) {
   const postDate = hostel?.createdAt?.slice(0, 10);
 
   const timePassed = new Date(postDate);
-  
-  console.log(new Date(Date.now() - timePassed * 1000))  
- 
+
+  // console.log(new Date(Date.now() - timePassed * 1000));
 
   // const currT = Date.now()  - timePassed
 
@@ -94,14 +113,68 @@ function ViewHostel(props) {
 
   const hostelDateSince = timeSince(new Date(timePassed - aDay));
   // console.log(currT)
-  // console.log(timeSince(new Date(Date.now() - new Date(currT))));   
+  // console.log(timeSince(new Date(Date.now() - new Date(currT))));
+  console.log(hostelId);
+
+  const hadlePrevious = (index) => {
+    if (nextIndex === hostel?.image.length - 1) {
+      console.log("shit");
+      setNextIndex(1);
+      console.log("noq" + nextIndex);
+    } else {
+      setNextIndex(nextIndex + 1);
+    }
+  };
+  const handleNext = () => {
+    if (nextIndex === hostel?.image.length - 1) {
+      console.log("shit");
+      setNextIndex(1);
+      console.log("noq" + nextIndex);
+    } else {
+      setNextIndex(nextIndex + 1);
+    }
+  };
+
+  console.log(nextIndex);
 
   return (
     <div>
+      {showImage && (
+        <>
+          <div className="absolute w-full h-screen flex justify-between bg-black/50  items-center ">
+            <div
+              className="absolute top-2 right-3 cursor-pointer"
+              onClick={() => setShowImage((prevState) => !prevState)}
+            >
+              <GiCancel style={{ fontSize: "2em", color: "white" }} />
+            </div>
+            <IoChevronBackSharp
+              style={{
+                fontSize: "3em",
+                cursor: "pointer",
+                marginLeft: "3em",
+              }}
+              onClick={hadlePrevious}
+            />
+            <ImageViewer
+              images={hostel?.image}
+              index={nextIndex || previousIndex}
+            />
+            <IoChevronForwardSharp
+              style={{
+                fontSize: "3em",
+                cursor: "pointer",
+                marginRight: "3em",
+              }}
+              onClick={handleNext}
+            />
+          </div>
+        </>
+      )}
       {showConfirm && (
-        <div className="border absolute w-full h-screen flex justify-center flex-col items-center">  
+        <div className="border absolute w-full h-screen flex justify-center flex-col items-center">
           {" "}
-          <ConfirmBooking />
+          <ConfirmBooking message={"Booking Placed Wait for Email"} />
         </div>
       )}
 
@@ -165,6 +238,13 @@ function ViewHostel(props) {
                     readOnly
                     hidden
                   />
+                  {/* <input
+                    type="number"
+                    className="text-black"
+                    name="stuid"
+                    readOnly
+                    hidden
+                  /> */}
 
                   <button className="capitalize font-medium shadow-sm rounded-md bg-cyan-800 text-white px-3 py-2 ">
                     book now
@@ -172,7 +252,6 @@ function ViewHostel(props) {
                 </div>
               </form>
             </div>
-            +
           </div>
         </div>
 
@@ -186,6 +265,7 @@ function ViewHostel(props) {
                 src={`${localhost}${img}`}
                 alt=""
                 className="w-full h-full bg-center bg-cover bg-no-repeat"
+                onClick={() => setShowImage((prevState) => !prevState)}
               />
             </div>
           ))}
