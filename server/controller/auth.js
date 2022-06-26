@@ -11,7 +11,7 @@ require("dotenv/config");
 const transporter = nodemailer.createTransport(
   sendGridTransport({
     auth: {
-      api_key: `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 `,
+      api_key: process.env.EMAIL_API_KEY,
     },
   })
 );
