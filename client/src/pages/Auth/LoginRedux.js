@@ -108,21 +108,31 @@ function Login() {
               {isLoading ? "Loading..." : "Login"}
             </button>
           </div>
-          <div className="sign-in px-4 text-center mb-5">
-            <span className="text-gray-700 text-sm font-light">
-              Dont have an account?
-              <Link
-                to="/register"
-                className="text-red-500 text-sm font-normal hover:text-red-900 hover:underline px-1"
-              >
-                Register
-              </Link>
-            </span>
 
-            <span>
-              forgot password?
-              <Link to="/reset">Reset</Link>
-            </span>
+          <div className="flex justify-between px-2">
+            <div className="sign-in  text-center mb-5">
+              <span className="text-gray-700 text-sm font-light">
+                Forgot Password?
+                <Link
+                  to="/reset"
+                  className="text-red-500 text-sm font-normal hover:text-red-900 hover:underline px-1"
+                >
+                  Reset
+                </Link>
+              </span>
+            </div>
+
+            <div className="sign-in text-center mb-5">
+              <span className="text-gray-700 text-sm font-light">
+                Dont have an account?
+                <Link
+                  to="/Signup"
+                  className="text-red-500 text-sm font-normal hover:text-red-900 hover:underline px-1"
+                >
+                  Signup
+                </Link>
+              </span>
+            </div>
           </div>
           <div className="px-3">
             <span>

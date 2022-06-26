@@ -10,9 +10,12 @@ function Reset() {
   const errors = useSelector((state) => state.error.msg.message);
 
   //   const check = useSelector((state) => state.auth.isAuthenticated);
-    const isLoading = useSelector((state) => state.auth.isLoading);
+  const isLoading = useSelector((state) => state.auth.isLoading);
 
   //   console.log(check);
+
+
+//   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
 
   console.log(errors);
   const [user, setUser] = useState({
@@ -73,8 +76,8 @@ function Reset() {
         <form className="flex flex-col" onSubmit={handleSubmit}>
           <div className="title mb-5">
             <h1 className="text-4xl px-10">
-              <span className="text-cyan-900  font-bold">Welcome.</span>{" "}
-              <span className="font-light text-gray-700">Please Login</span>
+              <span className="text-cyan-900  font-bold">Enter Your.</span>{" "}
+              <span className="font-light text-gray-700">Email </span>
             </h1>
           </div>
           {errors ? <span className="text-red-700">{errors}</span> : null}
@@ -97,7 +100,7 @@ function Reset() {
               {isLoading ? "Loading..." : "Reset"}
             </button>
           </div>
-          
+
           <div className="px-3">
             <span>
               <hr />
