@@ -14,9 +14,6 @@ function Reset() {
 
   //   console.log(check);
 
-
-//   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
-
   console.log(errors);
   const [user, setUser] = useState({
     email: "",
